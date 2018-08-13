@@ -21,6 +21,7 @@ public class BalloonCollider : MonoBehaviour {
 	}
 
 	void OnTriggerExit2D(Collider2D collider){
+		//屏幕左右互通
 		offSetx = Mathf.Abs (player.position.x - transform.position.x);
 		float offSetBalloon = transform.position.x - collider.transform.position.x;
 		if (collider.tag == "BoundaryL") {
@@ -31,11 +32,14 @@ public class BalloonCollider : MonoBehaviour {
 			if(offSetBalloon>0)
 			chain.position -= new Vector3 (screenWith+offSetx, 0);		
 		}
+
 	}
 
 	void OnCollisionEnter2D(Collision2D coll) {
-		if (coll.gameObject.tag == "Step") {
-			playerDead.GameOver ();
+		if (coll.gameObject.tag == "Step"||coll.gameObject.tag =="drop") {
+			if (playerDead.isDead) {
+				playerDead.GameOver ();
+			}
 		}
 	}
 }
