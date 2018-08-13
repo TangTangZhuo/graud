@@ -16,4 +16,22 @@ public class PlayerDead : MonoBehaviour {
 	void Update () {
 		
 	}
+
+	public void GameOver(){
+		StartCoroutine(Dissolve());
+
+	}
+
+	IEnumerator Dissolve(){
+		float value = 0.251f;
+		for (float time = 0; time < 1; time += Time.deltaTime) {
+			value = Mathf.Lerp (value, 0.8f, time);
+			material.SetFloat ("_value", value);
+			if (Mathf.Abs (value - 0.8f) < 0.0001f) {
+				Time.timeScale = 0;
+				continue;
+			}
+			yield return 0;
+		}
+	}
 }
