@@ -5,6 +5,7 @@ using UnityEngine;
 public class DropGenerate : MonoBehaviour {
 	public Transform[] drops;
 	public Transform balloon;
+	private int[] dropNum;
 
 	float time = 0;
 
@@ -12,6 +13,7 @@ public class DropGenerate : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		i = 0;
+		dropNum = new int[]{0,2,5,7,9,10};
 	}
 	
 	// Update is called once per frame
@@ -19,31 +21,32 @@ public class DropGenerate : MonoBehaviour {
 		if (time < 2) {
 			time += Time.deltaTime;
 		} else {
-			SendMessage ("GenerateByTime" + i);
+			SendMessage ("GenerateByTime" + dropNum[i]);
 			i++;
-			if (i == 9)
+			if (i == dropNum.Length)
 				i = 0;
 			time = 0;
 		}
 	}
 
-	//方块
+	//方块(碰撞炸裂)
 	void GenerateByTime0(){
 		for (int i=0; i < 10; i++) {
 			Transform drop = GameObject.Instantiate (drops [0],transform);
 			drop.position = balloon.position + new Vector3 (0, 2, 0);
+
 		}
 	}
 
 	//脚丫
-	void GenerateByTime1(){
-		for (int i=0; i < 10; i++) {
-			Transform drop = GameObject.Instantiate (drops [0]);
-			drop.position = balloon.position + new Vector3 (0, 2, 0);
-		}
-	}
+//	void GenerateByTime1(){
+//		for (int i=0; i < 10; i++) {
+//			Transform drop = GameObject.Instantiate (drops [0]);
+//			drop.position = balloon.position + new Vector3 (0, 2, 0);
+//		}
+//	}
 
-	//垃圾桶
+	//垃圾桶(大范围)
 	void GenerateByTime2(){
 		for (int i=0; i < 10; i++) {
 			Transform drop = GameObject.Instantiate (drops [2],transform);
@@ -52,18 +55,18 @@ public class DropGenerate : MonoBehaviour {
 	}
 
 	//凹四边形
-	void GenerateByTime3(){
-		Transform drop = GameObject.Instantiate (drops [3],transform);
-		drop.position = balloon.position + new Vector3 (0, 2, 0);
-		for (int i=1; i < 5; i++) {
-			Transform dropl = GameObject.Instantiate (drops [3],transform);
-			dropl.position = balloon.position + new Vector3 (0, 2, 0) + new Vector3 (- i * 0.4f, i * 0.2f, 0);
-		}
-		for (int i=1; i < 5; i++) {
-			Transform dropr = GameObject.Instantiate (drops [3],transform);
-			dropr.position = balloon.position + new Vector3 (0, 2, 0) + new Vector3 (i * 0.4f, i * 0.2f, 0);
-		}
-	}
+//	void GenerateByTime3(){
+//		Transform drop = GameObject.Instantiate (drops [3],transform);
+//		drop.position = balloon.position + new Vector3 (0, 2, 0);
+//		for (int i=1; i < 5; i++) {
+//			Transform dropl = GameObject.Instantiate (drops [3],transform);
+//			dropl.position = balloon.position + new Vector3 (0, 2, 0) + new Vector3 (- i * 0.4f, i * 0.2f, 0);
+//		}
+//		for (int i=1; i < 5; i++) {
+//			Transform dropr = GameObject.Instantiate (drops [3],transform);
+//			dropr.position = balloon.position + new Vector3 (0, 2, 0) + new Vector3 (i * 0.4f, i * 0.2f, 0);
+//		}
+//	}
 
 	//十字架
 	void GenerateByTime4(){
@@ -93,58 +96,68 @@ public class DropGenerate : MonoBehaviour {
 		dropr.position = balloon.position + new Vector3 (0, 2, 0)+ new Vector3 (0.75f,-0.45f, 0);
 	}
 
-	//枫叶
-	void GenerateByTime6(){
-		Transform drop = GameObject.Instantiate (drops [6],transform);
-		drop.position = balloon.position + new Vector3 (0, 2, 0);
-		for (int i = 1; i < 5; i++) {
-			Transform dropl = GameObject.Instantiate (drops [6],transform);
-			dropl.position = balloon.position + new Vector3 (0, 2, 0) + new Vector3 (-i/2 * 0.45f, i*1.5f * 0.3f, 0);
-		}
-	}
+//	//枫叶
+//	void GenerateByTime6(){
+//		Transform drop = GameObject.Instantiate (drops [6],transform);
+//		drop.position = balloon.position + new Vector3 (0, 2, 0);
+//		for (int i = 1; i < 5; i++) {
+//			Transform dropl = GameObject.Instantiate (drops [6],transform);
+//			dropl.position = balloon.position + new Vector3 (0, 2, 0) + new Vector3 (-i/2 * 0.45f, i*1.5f * 0.3f, 0);
+//		}
+//	}
 
-	//五角星
+	//五角星(数量多)
 	void GenerateByTime7(){
 		Transform drop = GameObject.Instantiate (drops [7],transform);
 		drop.position = balloon.position + new Vector3 (0, 2, 0);	
 		for (int i = 1; i < 10; i++) {
 			Transform dropl = GameObject.Instantiate (drops [7],transform);
-			dropl.position = balloon.position + new Vector3 (0, 2, 0) + new Vector3 (-i * 0.3f, i* 0.07f, 0);
+			dropl.position = balloon.position + new Vector3 (0, 2, 0) + new Vector3 (-i * 0.3f, 0.5f, 0);
 		}
 		for (int i = 1; i < 10; i++) {
 			Transform dropl = GameObject.Instantiate (drops [7],transform);
-			dropl.position = balloon.position + new Vector3 (0, 2, 0) + new Vector3 (-i * 0.3f,- i* 0.07f, 0);
+			dropl.position = balloon.position + new Vector3 (0, 2, 0) + new Vector3 (-i * 0.3f,-0.5f, 0);
 		}
 		for (int i = 1; i < 10; i++) {
 			Transform dropr = GameObject.Instantiate (drops [7],transform);
-			dropr.position = balloon.position + new Vector3 (0, 2, 0) + new Vector3 (i * 0.3f, i* 0.07f, 0);
+			dropr.position = balloon.position + new Vector3 (0, 2, 0) + new Vector3 (i * 0.3f, 0.5f, 0);
 		}
 		for (int i = 1; i < 10; i++) {
 			Transform dropr = GameObject.Instantiate (drops [7],transform);
-			dropr.position = balloon.position + new Vector3 (0, 2, 0) + new Vector3 (i * 0.3f,- i* 0.07f, 0);
+			dropr.position = balloon.position + new Vector3 (0, 2, 0) + new Vector3 (i * 0.3f,-0.5f, 0);
 		}
 	}
 
 	//鞋
-	void GenerateByTime8(){
-		Transform drops1 = GameObject.Instantiate (drops [8],transform);
-		drops1.position = balloon.position + new Vector3 (-1, 2, 0);
-		drops1.eulerAngles = drops1.eulerAngles + new Vector3 (0, 180, 0);
-		Transform drops2 = GameObject.Instantiate (drops [8],transform);
-		drops2.position = balloon.position + new Vector3 (1, 2, 0);
-
-		Transform drops3 = GameObject.Instantiate (drops [1],transform);
-		drops3.position = drops1.position + new Vector3 (-0.7f, 0.4f, 0);
-		drops3.eulerAngles = drops3.eulerAngles + new Vector3 (0, 180, 0);
-		Transform drops4 = GameObject.Instantiate (drops [1],transform);
-		drops4.position = drops2.position + new Vector3 (0.7f, 0.4f, 0);
-	}
+//	void GenerateByTime8(){
+//		Transform drops1 = GameObject.Instantiate (drops [8],transform);
+//		drops1.position = balloon.position + new Vector3 (-1, 2, 0);
+//		drops1.eulerAngles = drops1.eulerAngles + new Vector3 (0, 180, 0);
+//		Transform drops2 = GameObject.Instantiate (drops [8],transform);
+//		drops2.position = balloon.position + new Vector3 (1, 2, 0);
+//
+//		Transform drops3 = GameObject.Instantiate (drops [1],transform);
+//		drops3.position = drops1.position + new Vector3 (-0.7f, 0.4f, 0);
+//		drops3.eulerAngles = drops3.eulerAngles + new Vector3 (0, 180, 0);
+//		Transform drops4 = GameObject.Instantiate (drops [1],transform);
+//		drops4.position = drops2.position + new Vector3 (0.7f, 0.4f, 0);
+//	}
 
 	//三角形
 	void GenerateByTime9(){
 		for (int i=0; i < 10; i++) {
 			Transform drop = GameObject.Instantiate (drops [9],transform);
 			drop.position = balloon.position + new Vector3 (0, 2, 0);
+			drop.GetComponent<Rigidbody2D> ().AddTorque (40);
+		}
+	}
+
+	//圆
+	void GenerateByTime10(){
+		for (int i=0; i < 15; i++) {
+			Transform drop = GameObject.Instantiate (drops [10],transform);
+			drop.position = balloon.position + new Vector3 (0, 2, 0);
+
 		}
 	}
 }
