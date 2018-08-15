@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class PlayerDead : MonoBehaviour {
 	Material material;
 	public PlayerController playerController;
-	private BalloonCollider balloonCo;
+//	private BalloonCollider balloonCo;
 	public bool isDead;
 	private bool isReset;
 
@@ -19,7 +19,7 @@ public class PlayerDead : MonoBehaviour {
 		isReset = false;
 
 		material = GetComponent<SpriteRenderer> ().material;
-		balloonCo = GetComponentInParent<BalloonCollider> ();
+//		balloonCo = GetComponentInParent<BalloonCollider> ();
 
 		Color color = new Color (0, 0, 0);
 		material.SetColor ("_icolor", color);
@@ -37,6 +37,7 @@ public class PlayerDead : MonoBehaviour {
 		isDead = false;
 	}
 
+	//死亡溶解
 	IEnumerator Dissolve(){
 		float value = 0.251f;
 		for (float time = 0; time < 1; time += Time.deltaTime) {

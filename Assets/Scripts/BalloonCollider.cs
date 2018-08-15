@@ -32,6 +32,9 @@ public class BalloonCollider : MonoBehaviour {
 			if(offSetBalloon>0)
 			chain.position -= new Vector3 (screenWith+offSetx, 0);		
 		}
+		if (collider.tag == "End") {
+			ProgressManager.Instance.GameWin ();
+		}
 
 	}
 

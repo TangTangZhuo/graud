@@ -51,7 +51,8 @@ public class UseLineRenderer : MonoBehaviour {
 		if(chains.Count > 0 && !GetComponent<LineRenderer>())
 		{
 			lineRend = gameObject.AddComponent<LineRenderer>();
-			lineRend.SetVertexCount (chains.Count);
+			//lineRend.SetVertexCount (chains.Count);
+			lineRend.numPositions = chains.Count;
 			lineRend.material = ropeMaterial;
 		}
 		else lineRend = GetComponent<LineRenderer>();
@@ -64,7 +65,9 @@ public class UseLineRenderer : MonoBehaviour {
 				width = chains[0].GetComponent<Renderer>().bounds.size.x;
 			}
 
-			lineRend.SetWidth (width, width);
+			//lineRend.SetWidth (width, width);
+			lineRend.startWidth = width;
+			lineRend.endWidth = width;
 		}
 
 		startChainCount = chains.Count;
@@ -95,7 +98,8 @@ public class UseLineRenderer : MonoBehaviour {
 		chains.Add (chain);	//add chain into chains list
 
 		//fill LineRenderer component's positions
-		lineRend.SetVertexCount (chains.Count);
+		//lineRend.SetVertexCount (chains.Count);
+		lineRend.numPositions = chains.Count;
 		lineRend.SetPosition (chains.Count - 1, chains[chains.Count - 1].position);
 
 		startChainCount = chains.Count;
@@ -153,7 +157,8 @@ public class UseLineRenderer : MonoBehaviour {
 			}
 
 			//clear linerenderer's positions
-				lineRend.SetVertexCount(0);
+			//	lineRend.SetVertexCount(0);
+			lineRend.numPositions = 0;
 
 			//fill chains array
 			chains.Clear ();
@@ -161,7 +166,8 @@ public class UseLineRenderer : MonoBehaviour {
 				chains.Add (child);
 
 			//set linerenderer's positions count
-				lineRend.SetVertexCount(chains.Count);
+			//	lineRend.SetVertexCount(chains.Count);
+			lineRend.numPositions = chains.Count;
 
 			//add UseLineRenderer script to new part and set rope material for that
 			var useLineRend = newPart.AddComponent<UseLineRenderer>();
