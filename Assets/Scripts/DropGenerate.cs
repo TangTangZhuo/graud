@@ -38,7 +38,8 @@ public class DropGenerate : MonoBehaviour {
 			if (time < 2) {
 				time += Time.deltaTime;
 			} else {
-				SendMessage ("GenerateByTime" + dropNum [Random.Range(0,dropNum.Length)]);
+				//SendMessage ("GenerateByTime" + dropNum [Random.Range(0,dropNum.Length)]);
+				SendMessage ("GenerateByTime" + dropNum [3]);
 //				index++;
 //				if (index == dropNum.Length)
 //					index = 0;
@@ -191,6 +192,6 @@ public class DropGenerate : MonoBehaviour {
 	}
 
 	Vector3 GetBalloonPos(){
-		return(new Vector3 (midScreen, balloon.position.y + 2.5f, 0));
+		return(new Vector3 (midScreen, balloon.position.y + 1.5f, 0));
 	}
 }

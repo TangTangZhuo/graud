@@ -18,7 +18,8 @@ public class StepGenerate : MonoBehaviour {
 		currentLevel = 30;
 		int abc = GetStepNumber (currentLevel) [0];
 		int de = GetStepNumber (currentLevel) [1];
-		stepsNumber = new int[]{abc, abc, abc, de, de};
+		//stepsNumber = new int[]{abc, abc, abc, de, de};
+		stepsNumber = new int[]{4, 4, 4, 4, 4,4,4,4,4};
 		isFinishGenerate = false;
 		leftScreen = Camera.main.ViewportToWorldPoint (new Vector3 (0, 0, 0)).x;
 		rightScreen = Camera.main.ViewportToWorldPoint (new Vector3 (1, 0, 0)).x;
@@ -26,8 +27,22 @@ public class StepGenerate : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+//		if (isFinishGenerate == false) {
+//			if (stepsNumber [0] != 0 || stepsNumber [1] != 0 || stepsNumber [2] != 0 || stepsNumber [3] != 0 || stepsNumber [4] != 0) {
+//				int index = Random.Range (0, stepsNumber.Length);
+//				if (stepsNumber [index] > 0) {
+//					GenerateStep (index);
+//					stepsNumber [index] -= 1;
+//				}
+//			} else {
+//				isFinishGenerate = true;
+//				Transform theEnd = GameObject.Instantiate (end,transform);
+//				theEnd.position = new Vector3 (leftScreen, preStep.position.y - 3.4f);
+//			}
+//		}
 		if (isFinishGenerate == false) {
-			if (stepsNumber [0] != 0 || stepsNumber [1] != 0 || stepsNumber [2] != 0 || stepsNumber [3] != 0 || stepsNumber [4] != 0) {
+			if (stepsNumber [0] != 0 || stepsNumber [1] != 0 || stepsNumber [2] != 0 || stepsNumber [3] != 0 || stepsNumber [4] != 0
+				|| stepsNumber [5] != 0 || stepsNumber [6] != 0 || stepsNumber [7] != 0 || stepsNumber [8] != 0) {
 				int index = Random.Range (0, stepsNumber.Length);
 				if (stepsNumber [index] > 0) {
 					GenerateStep (index);
@@ -61,20 +76,20 @@ public class StepGenerate : MonoBehaviour {
 
 	//生成对应类型的台阶
 	void GenerateStep(int num){
+//		Transform step = GameObject.Instantiate (steps [num],transform);
+//		if (num == 3) {
+//			if (Random.Range (0, 2) == 1) {
+//				step.position = new Vector3 (leftScreen, preStep.position.y - 3.4f);
+//			} else {
+//				step.position = new Vector3 (rightScreen, preStep.position.y - 3.4f);
+//			}
+//		} else {
+//			step.position = new Vector3 (leftScreen + Random.value * 3.6f, preStep.position.y - 3.4f);
+//		}
 		Transform step = GameObject.Instantiate (steps [num],transform);
-		if (num == 3) {
-			if (Random.Range (0, 2) == 1) {
-				step.position = new Vector3 (leftScreen, preStep.position.y - 3.4f);
-			} else {
-				step.position = new Vector3 (rightScreen, preStep.position.y - 3.4f);
-			}
-		} else {
-			step.position = new Vector3 (leftScreen + Random.value * 3.6f, preStep.position.y - 3.4f);
-		}
-//		Transform stepl = GameObject.Instantiate (steps [num],transform);
-//		stepl.position = step.position - new Vector3 (rightScreen-leftScreen, 0, 0);
-//		Transform stepr = GameObject.Instantiate (steps [num],transform);
-//		stepr.position = step.position + new Vector3 (rightScreen-leftScreen, 0, 0);
+
+		step.position = new Vector3 (leftScreen, preStep.position.y - 5.4f);
+
 		preStep = step;
 	}
 }
