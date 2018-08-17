@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour {
 		if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android) {
 			moveSpeed = 30f;
 		} else {
-			moveSpeed = 250;
+			moveSpeed = 350;
 		}
 		addSpeed = 0;
 	}

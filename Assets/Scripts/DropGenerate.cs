@@ -35,11 +35,11 @@ public class DropGenerate : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (isGenerate) {
-			if (time < 2) {
+			if (time < 3) {
 				time += Time.deltaTime;
 			} else {
 				//SendMessage ("GenerateByTime" + dropNum [Random.Range(0,dropNum.Length)]);
-				SendMessage ("GenerateByTime" + dropNum [3]);
+				SendMessage ("GenerateByTime" + dropNum [1]);
 //				index++;
 //				if (index == dropNum.Length)
 //					index = 0;
