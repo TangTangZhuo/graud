@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ProgressManager : MonoBehaviour {
+	public Slider progressSlider;
+	public Slider sliderBad;
+
 	private static ProgressManager instance;
 	public static ProgressManager Instance{
 		get{return instance;}

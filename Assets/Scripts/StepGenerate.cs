@@ -9,6 +9,7 @@ public class StepGenerate : MonoBehaviour {
 	int currentLevel;
 	float leftScreen;
 	float rightScreen;
+	float startPos;
 	bool isFinishGenerate;
 
 	int[] stepsNumber;
@@ -19,6 +20,7 @@ public class StepGenerate : MonoBehaviour {
 		int abc = GetStepNumber (currentLevel) [0];
 		int de = GetStepNumber (currentLevel) [1];
 		//stepsNumber = new int[]{abc, abc, abc, de, de};
+		startPos = preStep.position.y;
 		stepsNumber = new int[]{4, 4, 4, 4, 4,4,4,4,4};
 		isFinishGenerate = false;
 		leftScreen = Camera.main.ViewportToWorldPoint (new Vector3 (0, 0, 0)).x;
@@ -51,6 +53,10 @@ public class StepGenerate : MonoBehaviour {
 			} else {
 				isFinishGenerate = true;
 				Transform theEnd = GameObject.Instantiate (end,transform);
+				ProgressManager.Instance.progressSlider.maxValue = startPos;
+				ProgressManager.Instance.progressSlider.minValue = preStep.position.y - 3.4f;
+				ProgressManager.Instance.sliderBad.maxValue = startPos;
+				ProgressManager.Instance.sliderBad.minValue = preStep.position.y - 3.4f;
 				theEnd.position = new Vector3 (leftScreen, preStep.position.y - 3.4f);
 			}
 		}
@@ -88,7 +94,7 @@ public class StepGenerate : MonoBehaviour {
 //		}
 		Transform step = GameObject.Instantiate (steps [num],transform);
 
-		step.position = new Vector3 (leftScreen, preStep.position.y - 5.4f);
+		step.position = new Vector3 (leftScreen, preStep.position.y - 5.2f);
 
 		preStep = step;
 	}

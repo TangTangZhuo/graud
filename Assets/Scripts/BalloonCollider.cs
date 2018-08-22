@@ -20,6 +20,12 @@ public class BalloonCollider : MonoBehaviour {
 
 	}
 
+	void OnTriggerEnter2D(Collider2D other) {
+		if (other.tag == "Storm") {
+			PlayerDead.Instance.GameOver ();
+		}
+	}
+
 	void OnTriggerExit2D(Collider2D collider){
 		//屏幕左右互通
 		offSetx = Mathf.Abs (player.position.x - transform.position.x);
@@ -39,7 +45,7 @@ public class BalloonCollider : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D coll) {
-		if (coll.gameObject.tag == "Step"||coll.gameObject.tag =="drop") {
+		if (coll.gameObject.tag == "Step"||coll.gameObject.tag =="drop"||coll.gameObject.tag =="RedStep") {
 			if (playerDead.isDead) {
 				playerDead.GameOver ();
 			}

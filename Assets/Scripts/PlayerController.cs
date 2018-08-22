@@ -6,9 +6,15 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour {
 	Rigidbody2D playerRig;
 	public float moveSpeed;
-	bool isStart;
+	[HideInInspector]
+	public bool isStart;
+	[HideInInspector]
 	public bool isMove;
+	public Transform lightning;
+	public float lightningSpeed;
 	private float addSpeed;
+	float sliderValue=0;
+	float badSliderValue=0;
 
 	private static PlayerController instance;
 	public static PlayerController Instance{
@@ -25,16 +31,15 @@ public class PlayerController : MonoBehaviour {
 		isStart = false;
 		isMove = true;
 		if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android) {
-			moveSpeed = 30f;
+			moveSpeed = 1;
 		} else {
-			moveSpeed = 350;
+		//	moveSpeed = 1;
 		}
 		addSpeed = 0;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		//print (playerRig.velocity.y);
 		if (playerRig.velocity.y < -6) {
 			addSpeed = moveSpeed * playerRig.velocity.y / -6f - moveSpeed;
 		} else {
@@ -42,45 +47,66 @@ public class PlayerController : MonoBehaviour {
 		}
 		if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android) {
 			if (isMove) {
+				//if (playerRig.velocity.y <= 0) {
 				if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Moved) {
-					playerRig.AddForce (Vector2.right * Input.GetTouch (0).deltaPosition.x * (moveSpeed+addSpeed));
-					//transform.Translate (0, -touch.deltaPosition.x * moveSpeed, 0);
+					//playerRig.AddForce (Vector2.right * Input.GetTouch (0).deltaPosition.x * (moveSpeed + addSpeed));
+					if(Input.GetTouch (0).deltaPosition.x>10)
+						transform.Translate (new Vector3 (10 * moveSpeed * Time.deltaTime, 0, 0), Space.World);					
+					else if(Input.GetTouch (0).deltaPosition.x<-10)
+						transform.Translate (new Vector3 (-10 * moveSpeed * Time.deltaTime, 0, 0), Space.World);					
+					else{
+						transform.Translate (new Vector3 (Input.GetTouch (0).deltaPosition.x * moveSpeed * Time.deltaTime, 0, 0), Space.World);
+					}
 					if (!isStart) {
 						DropGenerate.Instance.isGenerate = true;
 						isStart = true;
 					}
 				} else {
-					playerRig.velocity = new Vector2 (playerRig.velocity.x/1.1f, playerRig.velocity.y);
+					playerRig.velocity = new Vector2 (playerRig.velocity.x / 1.1f, playerRig.velocity.y);
 				}
+			//	}
 			}
 		} else {
 			if (isMove) {
-				if (Input.GetKey (KeyCode.A)) {
-					//playerRig.velocity = Vector2.left * moveSpeed;
-					//transform.Translate (0, moveSpeed*Time.deltaTime, 0);
-					//playerRig.MovePosition (playerRig.position + Vector2.left* moveSpeed * Time.fixedDeltaTime);
-					playerRig.AddForce (Vector2.left * (moveSpeed+addSpeed));
-					if (!isStart) {
-						DropGenerate.Instance.isGenerate = true;
-						isStart = true;
+				//if (playerRig.velocity.y <= 0) {
+					if (Input.GetKey (KeyCode.A)) {
+					//	playerRig.AddForce (Vector2.left * (moveSpeed + addSpeed));
+					transform.Translate (new Vector3 (-moveSpeed * Time.deltaTime,0, 0),Space.World);
+
+						if (!isStart) {
+							DropGenerate.Instance.isGenerate = true;
+							isStart = true;
+						}
+					} else if (Input.GetKey (KeyCode.D)) {
+					//	playerRig.AddForce (Vector2.right * (moveSpeed + addSpeed));
+					transform.Translate (new Vector3 (moveSpeed * Time.deltaTime, 0, 0),Space.World);
+						if (!isStart) {
+							DropGenerate.Instance.isGenerate = true;
+							isStart = true;
+						}
+					} else {
+						playerRig.velocity = new Vector2 (playerRig.velocity.x / 1.1f, playerRig.velocity.y);
 					}
-				} else if (Input.GetKey (KeyCode.D)) {
-					//playerRig.velocity = Vector2.right * moveSpeed;
-					//transform.Translate (0, -moveSpeed * Time.deltaTime, 0);
-					//playerRig.MovePosition (playerRig.position + Vector2.right* moveSpeed * Time.fixedDeltaTime);
-					playerRig.AddForce (Vector2.right * (moveSpeed+addSpeed));
-					if (!isStart) {
-						DropGenerate.Instance.isGenerate = true;
-						isStart = true;
-					}
-				} else {
-					playerRig.velocity = new Vector2 (playerRig.velocity.x/1.1f, playerRig.velocity.y);
-				}
+				//}
 			}
 		}
+		if (transform.position.y < sliderValue && isStart) {
+			ProgressManager.Instance.progressSlider.value = transform.position.y;
+			sliderValue = ProgressManager.Instance.progressSlider.value - 2;
+		}
+		if (isStart) {
+			//lightning.position += Vector3.down * Time.deltaTime * lightningSpeed;
+			lightning.position = Vector3.Lerp (lightning.position, lightning.position + Vector3.down, Time.deltaTime * lightningSpeed);
+			if (lightning.position.y < badSliderValue) {
+				ProgressManager.Instance.sliderBad.value = lightning.position.y;
+				badSliderValue = ProgressManager.Instance.sliderBad.value - 2;
+			}
+		}
+
+
 	}
 
 	void LateUpdate(){
-
+		
 	}
 }

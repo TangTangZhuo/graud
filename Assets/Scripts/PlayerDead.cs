@@ -13,6 +13,15 @@ public class PlayerDead : MonoBehaviour {
 //	private Vector3 startPosition;
 //
 //	public Transform chain;
+
+	private static PlayerDead instance;
+	public static PlayerDead Instance{
+		get{return instance;}
+	}
+
+	void Awake(){
+		instance = this;	
+	}
 	// Use this for initialization
 	void Start () {
 		isDead = true;
