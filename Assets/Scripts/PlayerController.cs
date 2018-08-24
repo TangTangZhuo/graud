@@ -106,7 +106,13 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
-	void LateUpdate(){
-		
-	}
+//	void OnTriggerEnter2D(Collider2D collider){
+//		if (collider.tag == "Pier") {
+//			if (ProgressManager.Instance.isOver) {
+//				playerRig.gravityScale = 0;
+//				playerRig.velocity = Vector3.zero;
+//				ProgressManager.Instance.isReady = true;
+//			}
+//		}
+//	}
 }
