@@ -5,8 +5,9 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
 	public GameObject startButton;
-	public Text fishMax;
-	public int fishNum;
+	public GameObject upgrading;
+	public int diveDepth;
+	public Text goldT;
 
 	private static UIManager instance;
 	public static UIManager Instance{
@@ -19,8 +20,7 @@ public class UIManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		fishNum = 10;
-		fishMax.text = "Size:" + 10;
+
 	}
 	
 	// Update is called once per frame

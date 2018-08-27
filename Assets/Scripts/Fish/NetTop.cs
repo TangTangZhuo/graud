@@ -4,31 +4,33 @@ using UnityEngine;
 using DG.Tweening;
 
 public class NetTop : MonoBehaviour {
-	int fishNum;
-	public Transform fish;
+	//public Transform fish;
+
+	bool isOver;
 	// Use this for initialization
 	void Start () {
-		fishNum = UIManager.Instance.fishNum;
+		isOver = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
-	}
-
-	void OnTriggerEnter2D(Collider2D collider){
-		if (collider.tag == "Fish") {									
-			if (fishNum > 0) {
-				fishNum -= 1;
-				UIManager.Instance.fishMax.text = "Size:" + fishNum;
-				collider.transform.position = transform.position;
-
-				collider.transform.SetParent (transform);
-				if (fishNum == 0) {
-					ProgressManager.Instance.GameOver ();
-				}
+		if (!isOver) {
+			if (transform.parent.position.y < UIManager.Instance.diveDepth) {
+				ProgressManager.Instance.GameOver ();
+				isOver = true;
 			}
 		}
 	}
+
+	void OnTriggerEnter2D(Collider2D collider){
+		if (collider.tag == "Fish") {	
+			if (!isOver) {
+				collider.transform.position = transform.position;
+				collider.transform.SetParent (transform);
+
+			} 				
+		}
+	}
+
 		
 }

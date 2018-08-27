@@ -51,11 +51,13 @@ public class ProgressManager : MonoBehaviour {
 		isRunning = true;
 		isReady = false;
 		UIManager.Instance.startButton.SetActive (false);
+		UIManager.Instance.upgrading.SetActive (false);
 		SubmarineController.Instance.gravityScale = 2;
 		if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android)
 			SubmarineController.Instance.moveSpeed = 1;
 		else
 			SubmarineController.Instance.moveSpeed = 10;
+		FishGenerate.Instance.GenerateFish ();
 	}
 
 

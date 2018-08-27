@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class SubmarineController : MonoBehaviour {
 	public float moveSpeed;
@@ -11,10 +12,14 @@ public class SubmarineController : MonoBehaviour {
 	public Transform netParent;
 	public Transform boundL;
 	public Transform boundR;
+	public Text score;
+	public Transform scoreParent;
 
 	float time;
 	bool isSettle;
 	int fishIndex;
+	int goldSum;
+	Dictionary<string,int> fishDic = new Dictionary<string, int>();
 
 	private static SubmarineController instance;
 	public static SubmarineController Instance{
@@ -36,6 +41,8 @@ public class SubmarineController : MonoBehaviour {
 		else
 			moveSpeed = 10;
 		playerRig.gravityScale = 0;
+		InitFishDic ();
+		goldSum = 0;
 	}
 	
 	// Update is called once per frame
@@ -60,16 +67,26 @@ public class SubmarineController : MonoBehaviour {
 		if (isSettle) {
 			time += Time.deltaTime;
 			if (time > 0.1f) {
-				if (fishIndex < netParent.childCount - 1)
-					Settlement (netParent.GetChild (fishIndex),0.3f);
+				if (fishIndex < netParent.childCount - 1) {
+					Transform fish = netParent.GetChild (fishIndex);
+					Settlement (fish, 0.3f);
+					ScoreGenerate (fish);
+				}
 				else if(fishIndex == netParent.childCount - 1){
-					netParent.GetChild (fishIndex).DOScale (4, 0.3f).OnComplete(()=>{
+					Transform fish = netParent.GetChild (fishIndex);
+					fish.DOScale (4, 0.3f).OnComplete(()=>{
 						isSettle = false;
+						int gold = PlayerPrefs.GetInt ("gold", 0) + goldSum;
+						PlayerPrefs.SetInt ("gold", gold);
+						Upgrading.Instance.CheckGold();
+
+						print(goldSum);
 						ProgressManager.Instance.GameWin ();
 					});
-					netParent.GetChild (fishIndex).GetComponent<SpriteRenderer> ().DOFade (0f, 0.3f);
-					netParent.GetChild (fishIndex).DOMoveY (netParent.GetChild (fishIndex).position.y+0.3f, 0.3f, false);
-				}
+					fish.GetComponent<SpriteRenderer> ().DOFade (0f, 0.3f);
+					fish.DOMoveY (netParent.GetChild (fishIndex).position.y+0.3f, 0.3f, false);
+					ScoreGenerate (fish);
+				}					
 				fishIndex++;
 				time = 0;
 			}
@@ -99,4 +116,22 @@ public class SubmarineController : MonoBehaviour {
 		fish.GetComponent<SpriteRenderer> ().DOFade (0f, time);
 	}
 
+	void ScoreGenerate(Transform fish){
+		Text text = Text.Instantiate (score, netParent.position, score.transform.rotation, scoreParent);
+		text.text = fishDic [fish.name].ToString();
+		goldSum += fishDic [fish.name];
+		text.transform.position = Camera.main.WorldToScreenPoint (fish.position);
+		text.DOFade (1f, 0.3f);
+		text.transform.DOMoveY (text.transform.position.y+250f, 0.3f, false);
+		text.transform.DOScale (1.5f, 0.3f).OnComplete(()=>{Destroy(text.gameObject);});
+	}
+
+	void InitFishDic(){
+		fishDic.Add ("fish1(Clone)", 100);
+		fishDic.Add ("fish2(Clone)", 120);
+		fishDic.Add ("fish3(Clone)", 150);
+		fishDic.Add ("fish4(Clone)", 180);
+		fishDic.Add ("fish5(Clone)", 210);
+		fishDic.Add ("fish6(Clone)", 250);
+	}
 }
