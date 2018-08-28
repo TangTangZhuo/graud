@@ -23,11 +23,10 @@ public class NetTop : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D collider){
-		if (collider.tag == "Fish") {	
+		if (collider.tag == "Fish"||collider.tag == "unusual") {	
 			if (!isOver) {
 				collider.transform.position = transform.position;
 				collider.transform.SetParent (transform);
-
 			} 				
 		}
 	}

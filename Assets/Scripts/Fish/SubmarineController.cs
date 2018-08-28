@@ -70,6 +70,7 @@ public class SubmarineController : MonoBehaviour {
 				if (fishIndex < netParent.childCount - 1) {
 					Transform fish = netParent.GetChild (fishIndex);
 					Settlement (fish, 0.3f);
+					PlayerPrefs.SetInt (fish.name.Split (new char[]{'('}) [0], 1);
 					ScoreGenerate (fish);
 				}
 				else if(fishIndex == netParent.childCount - 1){
@@ -79,12 +80,11 @@ public class SubmarineController : MonoBehaviour {
 						int gold = PlayerPrefs.GetInt ("gold", 0) + goldSum;
 						PlayerPrefs.SetInt ("gold", gold);
 						Upgrading.Instance.CheckGold();
-
-						print(goldSum);
 						ProgressManager.Instance.GameWin ();
 					});
 					fish.GetComponent<SpriteRenderer> ().DOFade (0f, 0.3f);
 					fish.DOMoveY (netParent.GetChild (fishIndex).position.y+0.3f, 0.3f, false);
+					PlayerPrefs.SetInt (fish.name.Split (new char[]{'('}) [0], 1);
 					ScoreGenerate (fish);
 				}					
 				fishIndex++;
@@ -133,5 +133,16 @@ public class SubmarineController : MonoBehaviour {
 		fishDic.Add ("fish4(Clone)", 180);
 		fishDic.Add ("fish5(Clone)", 210);
 		fishDic.Add ("fish6(Clone)", 250);
+		fishDic.Add ("fish7(Clone)", 300);
+		fishDic.Add ("fish8(Clone)", 350);
+
+		fishDic.Add ("unusual1(Clone)", fishDic["fish1(Clone)"]*2);
+		fishDic.Add ("unusual2(Clone)", fishDic["fish2(Clone)"]*2);
+		fishDic.Add ("unusual3(Clone)", fishDic["fish3(Clone)"]*2);
+		fishDic.Add ("unusual4(Clone)", fishDic["fish4(Clone)"]*2);
+		fishDic.Add ("unusual5(Clone)", fishDic["fish5(Clone)"]*2);
+		fishDic.Add ("unusual6(Clone)", fishDic["fish6(Clone)"]*2);
+		fishDic.Add ("unusual7(Clone)", fishDic["fish7(Clone)"]*2);
+		fishDic.Add ("unusual8(Clone)", fishDic["fish8(Clone)"]*2);
 	}
 }
