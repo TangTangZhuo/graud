@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Upgrading : MonoBehaviour {
+public class UpgradingOffline : MonoBehaviour {
 	private Text valueT;
 	private Text priceT;
 
@@ -11,8 +11,8 @@ public class Upgrading : MonoBehaviour {
 	private int price;
 	private int gold;
 
-	private static Upgrading instance;
-	public static Upgrading Instance{
+	private static UpgradingOffline instance;
+	public static UpgradingOffline Instance{
 		get{return instance;}
 	}
 
@@ -35,24 +35,24 @@ public class Upgrading : MonoBehaviour {
 
 	void UpdateData(){
 		
-		UIManager.Instance.diveDepth = PlayerPrefs.GetInt ("valueDepth", -17);
+		UIManager.Instance.offlineGold = PlayerPrefs.GetInt ("valueOffline", 4);
 
-		value = PlayerPrefs.GetInt ("valueDepth", UIManager.Instance.diveDepth);
-		price = PlayerPrefs.GetInt ("priceDepth", 281);
-		valueT.text = (value) + "M";
+		value = PlayerPrefs.GetInt ("valueOffline", UIManager.Instance.offlineGold);
+		price = PlayerPrefs.GetInt ("priceOffline", 281);
+		valueT.text = "+$" + value + "/Min";
 		priceT.text = "$" + price;
-		
+
 		gold = PlayerPrefs.GetInt ("gold", 0);
 		UIManager.Instance.goldT.text = gold.ToString ();
 	}
 
-	public void OnDepthClick(){
+	public void OnOfflineClick(){
 		if (gold > price) {
 			gold -= price;
-			UIManager.Instance.diveDepth -= 3;
-			price = (int)(price*1.25f);
-			PlayerPrefs.SetInt ("valueDepth", UIManager.Instance.diveDepth);
-			PlayerPrefs.SetInt ("priceDepth", price);
+			UIManager.Instance.offlineGold += 4;
+			price = (int)(price * 1.25f);
+			PlayerPrefs.SetInt ("valueOffline", UIManager.Instance.offlineGold);
+			PlayerPrefs.SetInt ("priceOffline", price);
 			PlayerPrefs.SetInt ("gold", gold);
 			UpdateData ();
 			CheckGold ();

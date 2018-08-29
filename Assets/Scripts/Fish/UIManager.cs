@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour {
 	public GameObject upgrading;
 	public int diveDepth;
 	public Text goldT;
+	public int offlineGold;
 
 	private static UIManager instance;
 	public static UIManager Instance{

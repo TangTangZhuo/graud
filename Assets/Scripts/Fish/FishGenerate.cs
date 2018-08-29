@@ -25,9 +25,8 @@ public class FishGenerate : MonoBehaviour {
 	void Start () {
 		fishIndex = 0;
 		typeDistance = 10;
-		euler = new int[]{ 180, -180 };
+		euler = new int[]{ 180, 0 };
 		diveDepth = UIManager.Instance.diveDepth;
-		//GenerateFish ();
 	}
 	
 	// Update is called once per frame
@@ -38,7 +37,7 @@ public class FishGenerate : MonoBehaviour {
 	public void GenerateFish(){
 		float screenMid = startPosition.position.x;
 		int counter = 0;
-		for (int i = (int)startPosition.position.y-2; i > diveDepth; i+=0) {
+		for (int i = (int)startPosition.position.y-2; i > UIManager.Instance.diveDepth; i+=0) {
 			float baseGeneratePosy = i - typeDistance / 2 ;
 			for (int num = 0; num < 5; num++) {
 				Transform.Instantiate (fish[fishIndex], new Vector3 (screenMid + Random.Range (-2, 3), baseGeneratePosy + Random.Range (-5, 6)), 

@@ -25,7 +25,7 @@ public class FishController : MonoBehaviour {
 					transform.eulerAngles = new Vector3 (0, 0, 0);
 				}
 				transform.Translate (speed * Time.deltaTime, 0, 0, Space.World);
-			} else {
+			} else if (transform.eulerAngles.y == 0){
 				if (transform.position.x < leftScreen) {
 					transform.eulerAngles = new Vector3 (0, 180, 0);
 				}

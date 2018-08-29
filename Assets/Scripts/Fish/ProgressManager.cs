@@ -10,6 +10,7 @@ public class ProgressManager : MonoBehaviour {
 	public bool isReady;
 	public bool isRunning;
 	public bool isOver;
+	public GameObject[] UIs;
 
 	private static ProgressManager instance;
 	public static ProgressManager Instance{
@@ -50,15 +51,22 @@ public class ProgressManager : MonoBehaviour {
 	public void onStartButton(){
 		isRunning = true;
 		isReady = false;
-		UIManager.Instance.startButton.SetActive (false);
-		UIManager.Instance.upgrading.SetActive (false);
+		//UIManager.Instance.startButton.SetActive (false);
+		//UIManager.Instance.upgrading.SetActive (false);
 		SubmarineController.Instance.gravityScale = 2;
 		if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android)
 			SubmarineController.Instance.moveSpeed = 1;
 		else
 			SubmarineController.Instance.moveSpeed = 10;
 		FishGenerate.Instance.GenerateFish ();
+		SubmarineController.Instance.InitProgressSlider ();
+		HideUI ();
+		SubmarineController.Instance.progressSlider.gameObject.SetActive (true);
 	}
 
-
+	void HideUI(){
+		for (int i = 0; i < UIs.Length; i++) {
+			UIs [i].SetActive (false);
+		}
+	}
 }

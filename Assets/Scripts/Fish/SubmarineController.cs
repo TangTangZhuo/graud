@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
+using Common;
 
 public class SubmarineController : MonoBehaviour {
 	public float moveSpeed;
@@ -14,6 +15,8 @@ public class SubmarineController : MonoBehaviour {
 	public Transform boundR;
 	public Text score;
 	public Transform scoreParent;
+	public Slider progressSlider;
+	public GameObject settleView;
 
 	float time;
 	bool isSettle;
@@ -43,6 +46,7 @@ public class SubmarineController : MonoBehaviour {
 		playerRig.gravityScale = 0;
 		InitFishDic ();
 		goldSum = 0;
+		InitProgressSlider ();
 	}
 	
 	// Update is called once per frame
@@ -63,6 +67,7 @@ public class SubmarineController : MonoBehaviour {
 					transform.Translate (new Vector3 (moveSpeed * Time.deltaTime, 0, 0), Space.World);
 				}
 			}
+			progressSlider.value = transform.position.y;
 		}
 		if (isSettle) {
 			time += Time.deltaTime;
@@ -77,10 +82,17 @@ public class SubmarineController : MonoBehaviour {
 					Transform fish = netParent.GetChild (fishIndex);
 					fish.DOScale (4, 0.3f).OnComplete(()=>{
 						isSettle = false;
-						int gold = PlayerPrefs.GetInt ("gold", 0) + goldSum;
-						PlayerPrefs.SetInt ("gold", gold);
-						Upgrading.Instance.CheckGold();
-						ProgressManager.Instance.GameWin ();
+						MessageBox.Show("MONEY","$"+goldSum);
+						MessageBox.confim=()=>{
+							int gold = PlayerPrefs.GetInt ("gold", 0) + goldSum;
+							PlayerPrefs.SetInt ("gold", gold);
+							Upgrading.Instance.CheckGold();
+							UpgradingOffline.Instance.CheckGold();
+							ProgressManager.Instance.GameWin ();
+							//settleView.SetActive(true);
+							//settleView.transform.GetComponentInChildren<Text>().text = "$" + goldSum;
+						};
+							
 					});
 					fish.GetComponent<SpriteRenderer> ().DOFade (0f, 0.3f);
 					fish.DOMoveY (netParent.GetChild (fishIndex).position.y+0.3f, 0.3f, false);
@@ -128,13 +140,13 @@ public class SubmarineController : MonoBehaviour {
 
 	void InitFishDic(){
 		fishDic.Add ("fish1(Clone)", 100);
-		fishDic.Add ("fish2(Clone)", 120);
+		fishDic.Add ("fish2(Clone)", 125);
 		fishDic.Add ("fish3(Clone)", 150);
-		fishDic.Add ("fish4(Clone)", 180);
-		fishDic.Add ("fish5(Clone)", 210);
-		fishDic.Add ("fish6(Clone)", 250);
-		fishDic.Add ("fish7(Clone)", 300);
-		fishDic.Add ("fish8(Clone)", 350);
+		fishDic.Add ("fish4(Clone)", 175);
+		fishDic.Add ("fish5(Clone)", 200);
+		fishDic.Add ("fish6(Clone)", 225);
+		fishDic.Add ("fish7(Clone)", 250);
+		fishDic.Add ("fish8(Clone)", 275);
 
 		fishDic.Add ("unusual1(Clone)", fishDic["fish1(Clone)"]*2);
 		fishDic.Add ("unusual2(Clone)", fishDic["fish2(Clone)"]*2);
@@ -144,5 +156,10 @@ public class SubmarineController : MonoBehaviour {
 		fishDic.Add ("unusual6(Clone)", fishDic["fish6(Clone)"]*2);
 		fishDic.Add ("unusual7(Clone)", fishDic["fish7(Clone)"]*2);
 		fishDic.Add ("unusual8(Clone)", fishDic["fish8(Clone)"]*2);
+	}
+
+	public void InitProgressSlider(){
+		progressSlider.minValue = UIManager.Instance.diveDepth;
+		progressSlider.maxValue = 0;
 	}
 }
