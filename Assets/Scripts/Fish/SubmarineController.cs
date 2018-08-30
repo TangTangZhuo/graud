@@ -62,8 +62,10 @@ public class SubmarineController : MonoBehaviour {
 			} else {
 
 				if (Input.GetKey (KeyCode.A)) {
+					transform.rotation = Quaternion.Euler (0, 180, 0);
 					transform.Translate (new Vector3 (-moveSpeed * Time.deltaTime, 0, 0), Space.World);			
 				} else if (Input.GetKey (KeyCode.D)) {
+					transform.rotation = Quaternion.Euler (0, 0, 0);
 					transform.Translate (new Vector3 (moveSpeed * Time.deltaTime, 0, 0), Space.World);
 				}
 			}
@@ -82,7 +84,7 @@ public class SubmarineController : MonoBehaviour {
 					Transform fish = netParent.GetChild (fishIndex);
 					fish.DOScale (4, 0.3f).OnComplete(()=>{
 						isSettle = false;
-						MessageBox.Show("MONEY","$"+goldSum);
+						MessageBox.Show("SALE REWARD","$"+goldSum);
 						MessageBox.confim=()=>{
 							int gold = PlayerPrefs.GetInt ("gold", 0) + goldSum;
 							PlayerPrefs.SetInt ("gold", gold);

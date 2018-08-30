@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class NetController : MonoBehaviour {
 	public Transform player;
@@ -23,8 +24,14 @@ public class NetController : MonoBehaviour {
 		if (ProgressManager.Instance.isRunning) {
 			lookat (player);
 			if (transform.position.x - player.position.x > 0.1) {
+				if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Moved) {
+					xspeed *= Input.GetTouch (0).deltaPosition.x;
+				}
 				transform.Translate (xspeed * Time.deltaTime, 0, 0, Space.World);
 			} else if (transform.position.x - player.position.x < -0.1) {
+				if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Moved) {
+					xspeed *= Input.GetTouch (0).deltaPosition.x;
+				}
 				transform.Translate (-xspeed * Time.deltaTime, 0, 0, Space.World);
 			}
 			transform.position = new Vector3 (transform.position.x, player.position.y + distance, 0);

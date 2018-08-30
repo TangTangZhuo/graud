@@ -47,7 +47,7 @@ public class TimeManager : MonoBehaviour {
 	void UpdateGold(){
 		int min = OfflineTime ();
 		if (min > 0) {
-			MessageBox.Show ("Offline", "$" + min * PlayerPrefs.GetInt ("valueOffline", 4));
+			MessageBox.Show ("OFFLINE REWARD", "$" + min * PlayerPrefs.GetInt ("valueOffline", 4));
 			MessageBox.confim=()=>{
 				int gold = PlayerPrefs.GetInt ("gold", 0) + min * PlayerPrefs.GetInt ("valueOffline", 4);
 				PlayerPrefs.SetInt ("gold", gold);
