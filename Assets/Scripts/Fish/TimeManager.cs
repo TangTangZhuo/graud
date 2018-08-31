@@ -8,6 +8,7 @@ public class TimeManager : MonoBehaviour {
 
 	DateTime currentDate;
 	DateTime oldDate;
+
 	void Start()
 	{		
 
@@ -17,14 +18,13 @@ public class TimeManager : MonoBehaviour {
 	{
 		//Savee the current system time as a string in the player prefs class
 		PlayerPrefs.SetString("sysString", System.DateTime.Now.ToBinary().ToString());
-
 	}
 
 	void OnApplicationPause(bool isPause){
 		if (isPause) {
 			PlayerPrefs.SetString("sysString", System.DateTime.Now.ToBinary().ToString());
 		} else {
-			UpdateGold ();
+				UpdateGold ();
 		}
 	}
 
@@ -54,6 +54,7 @@ public class TimeManager : MonoBehaviour {
 				UIManager.Instance.goldT.text = gold.ToString ();
 				Upgrading.Instance.CheckGold ();
 				UpgradingOffline.Instance.CheckGold ();
+				PlayerPrefs.SetString("sysString", System.DateTime.Now.ToBinary().ToString());
 			};
 		}
 	}

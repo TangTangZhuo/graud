@@ -17,6 +17,7 @@ public class SubmarineController : MonoBehaviour {
 	public Transform scoreParent;
 	public Slider progressSlider;
 	public GameObject settleView;
+	public float force;
 
 	float time;
 	bool isSettle;
@@ -77,6 +78,9 @@ public class SubmarineController : MonoBehaviour {
 				if (fishIndex < netParent.childCount - 1) {
 					Transform fish = netParent.GetChild (fishIndex);
 					Settlement (fish, 0.3f);
+					if (PlayerPrefs.GetInt (fish.name.Split (new char[]{ '(' }) [0], 0)==0) {
+						Illustration.Instance.illNew.SetActive (true);
+					}
 					PlayerPrefs.SetInt (fish.name.Split (new char[]{'('}) [0], 1);
 					ScoreGenerate (fish);
 				}
@@ -98,6 +102,9 @@ public class SubmarineController : MonoBehaviour {
 					});
 					fish.GetComponent<SpriteRenderer> ().DOFade (0f, 0.3f);
 					fish.DOMoveY (netParent.GetChild (fishIndex).position.y+0.3f, 0.3f, false);
+					if (PlayerPrefs.GetInt (fish.name.Split (new char[]{ '(' }) [0], 0)==0) {
+						Illustration.Instance.illNew.SetActive (true);
+					}
 					PlayerPrefs.SetInt (fish.name.Split (new char[]{'('}) [0], 1);
 					ScoreGenerate (fish);
 				}					
@@ -106,7 +113,7 @@ public class SubmarineController : MonoBehaviour {
 			}
 		}
 
-		playerRig.position = new Vector3 (Mathf.Clamp (playerRig.position.x,boundL.position.x,boundR.position.x), playerRig.position.y, 0);
+		//playerRig.position = new Vector3 (Mathf.Clamp (playerRig.position.x,boundL.position.x,boundR.position.x), playerRig.position.y, 0);
 	}
 
 	void OnTriggerEnter2D(Collider2D collider){
@@ -119,10 +126,30 @@ public class SubmarineController : MonoBehaviour {
 				isSettle = true;
 			}
 		}
-		if (collider.tag == "BoundaryL"||collider.tag == "BoundaryR") {
-			
+		if (collider.tag == "BoundaryL") {
+			moveSpeed = 0;
+			playerRig.AddForce (Vector2.right * force);
+			Invoke ("ReMoveSpeed", 0.5f);
+		}
+		if (collider.tag == "BoundaryR") {
+			moveSpeed = 0;
+			playerRig.AddForce (Vector2.left * force);
+			Invoke ("ReMoveSpeed", 0.5f);
 		}
 	}
+		
+	void ReMoveSpeed(){
+		moveSpeed = 10;
+	}
+//	public void OnPier(){
+//		if (ProgressManager.Instance.isOver) {
+//			gravityScale = 0;
+//			playerRig.velocity = Vector3.zero;
+//			ProgressManager.Instance.isReady = true;
+//			ProgressManager.Instance.isOver = false;
+//			isSettle = true;
+//		}
+//	}
 
 	void Settlement(Transform fish,float time){
 		fish.DOScale (4, time);

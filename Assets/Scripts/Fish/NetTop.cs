@@ -25,7 +25,7 @@ public class NetTop : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D collider){
 		if (collider.tag == "Fish"||collider.tag == "unusual") {	
 			if (!isOver) {
-				collider.transform.position = transform.position;
+				collider.transform.position = new Vector3(transform.position.x+Random.Range(-0.4f,0.4f), transform.position.y+Random.Range(-0.4f,0.4f),3);
 				collider.transform.SetParent (transform);
 			} 				
 		}

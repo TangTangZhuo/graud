@@ -11,9 +11,11 @@ public class NetController : MonoBehaviour {
 
 	Rigidbody2D playerRig;
 	bool isWin;
+	bool isOver;
 	float distance;
 	// Use this for initialization
 	void Start () {
+		isOver = false;
 		isWin = false;
 		playerRig = player.GetComponent<Rigidbody2D> ();
 		distance = Vector3.Distance (transform.position, player.position);
@@ -23,29 +25,40 @@ public class NetController : MonoBehaviour {
 	void Update () {
 		if (ProgressManager.Instance.isRunning) {
 			lookat (player);
-			if (transform.position.x - player.position.x > 0.1) {
-				if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Moved) {
-					xspeed *= Input.GetTouch (0).deltaPosition.x;
-				}
-				transform.Translate (xspeed * Time.deltaTime, 0, 0, Space.World);
-			} else if (transform.position.x - player.position.x < -0.1) {
-				if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Moved) {
-					xspeed *= Input.GetTouch (0).deltaPosition.x;
-				}
-				transform.Translate (-xspeed * Time.deltaTime, 0, 0, Space.World);
+			if (Mathf.Abs( transform.position.x - player.position.x) > 0.05) {
+				transform.DOMoveX (player.position.x, 0.3f, false);
 			}
 			transform.position = new Vector3 (transform.position.x, player.position.y + distance, 0);
 		} else if(ProgressManager.Instance.isOver) {
 			SubmarineController.Instance.moveSpeed = 0;
-			if (Mathf.Abs (transform.localEulerAngles.z) > 5) {
-				playerRig.velocity = Vector3.zero;
-				SubmarineController.Instance.gravityScale = 0;
-				transform.RotateAround (player.position, player.forward, roSpeed);
+			SubmarineController.Instance.gravityScale = 0;
+//			if (playerRig.velocity != Vector2.zero) {
+//				transform.DOMove (new Vector3 (transform.position.x, player.position.y - distance, 0), 1f, false).OnComplete(()=>{
+//					transform.position = new Vector3 (transform.position.x, player.position.y + distance, 0);
+//					player.DOMove(GameObject.FindWithTag("Pier").transform.position,2f,false).OnComplete(()=>{
+//						SubmarineController.Instance.OnPier();
+//					});
+//				});
+//			}
+			if (!isOver) {
+//				transform.DOMoveX (player.position.x, 0.3f, false).OnComplete (() => {
+//					isOver = true;
+//				});
+				transform.DOPause();
+				isOver = true;
 			}
-			else if(Mathf.Abs( transform.localEulerAngles.z) <5) {
-				playerRig.velocity = new Vector3 (0, playerRig.velocity.y, 0);
-				SubmarineController.Instance.gravityScale = -4;
-				transform.position = new Vector3 (transform.position.x, player.position.y - distance, 0);
+			if (isOver) {
+				if (Mathf.Abs (transform.localEulerAngles.z) > 10) {
+					playerRig.velocity = Vector3.zero;
+					SubmarineController.Instance.gravityScale = 0;
+					transform.RotateAround (player.position, player.forward, roSpeed);
+					//transform.DORotate (new Vector3 (transform.localEulerAngles.x, transform.localEulerAngles.y, 0), 1f, RotateMode.Fast);
+				} else if (Mathf.Abs (transform.localEulerAngles.z) <= 10) {
+					transform.localEulerAngles = new Vector3 (transform.localEulerAngles.x, transform.localEulerAngles.y, 0);
+					playerRig.velocity = new Vector3 (0, playerRig.velocity.y, 0);
+					SubmarineController.Instance.gravityScale = player.position.y / 5;
+					transform.position = new Vector3 (transform.position.x, player.position.y - distance, 0);
+				}
 			}
 		}else if (ProgressManager.Instance.isReady) {
 //			UIManager.Instance.startButton.SetActive (true);

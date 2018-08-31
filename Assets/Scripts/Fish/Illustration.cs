@@ -8,6 +8,7 @@ public class Illustration : MonoBehaviour {
 	public Transform illustration;
 	public Transform fishItem;
 	public Transform scrollContent;
+	public GameObject illNew;
 
 	int screenHeight;
 	bool isShow;
@@ -66,6 +67,7 @@ public class Illustration : MonoBehaviour {
 		if (!isShow) {
 			illustration.DOMoveY (illustration.position.y - screenHeight, 0.5f, false);
 			isShow = true;
+			illNew.SetActive (false);
 		}
 	}
 
