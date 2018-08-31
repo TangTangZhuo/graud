@@ -58,6 +58,12 @@ public class SubmarineController : MonoBehaviour {
 		if (ProgressManager.Instance.isRunning) {			
 			if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android) {
 				if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Moved) {
+					if (Input.GetTouch (0).deltaPosition.x > 0) {
+						transform.rotation = Quaternion.Euler (0, 0, 0);
+					}
+					if (Input.GetTouch (0).deltaPosition.x < 0) {
+						transform.rotation = Quaternion.Euler (0, 180, 0);
+					}
 					transform.Translate (new Vector3 (Input.GetTouch (0).deltaPosition.x * moveSpeed * Time.deltaTime, 0, 0), Space.World);
 				}
 			} else {
@@ -139,7 +145,10 @@ public class SubmarineController : MonoBehaviour {
 	}
 		
 	void ReMoveSpeed(){
-		moveSpeed = 10;
+		if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android)
+			moveSpeed = 1;
+		else
+			moveSpeed = 10;
 	}
 //	public void OnPier(){
 //		if (ProgressManager.Instance.isOver) {
