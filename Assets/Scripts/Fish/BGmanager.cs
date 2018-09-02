@@ -7,6 +7,17 @@ public class BGmanager : MonoBehaviour {
 	int index;
 
 	public GameObject waterF;
+	public Transform[] parallax1;
+	public Transform[] parallax2;
+	public Transform[] parallax3;
+	public Transform[] parallax4;
+	private Transform[][] parallax;
+
+	public Transform[] parallaxBg;
+
+	float leftScreen;
+	float rightScreen;
+
 	Transform bg;
 
 	private static BGmanager instance;
@@ -20,8 +31,12 @@ public class BGmanager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		parallax = new Transform[][]{ parallax1, parallax2, parallax3, parallax4 };
+		leftScreen = Camera.main.ViewportToWorldPoint (new Vector3 (0, 0, 0)).x;
+		rightScreen = Camera.main.ViewportToWorldPoint (new Vector3 (1, 1, 1)).x;
+
 		index = 0;
-		bg = GameObject.Find ("bg2").transform;
+		bg = GameObject.Find ("SprayBackround").transform;
 		bgColors = new Color[] {new Color (152 / 255f, 242 / 255f, 255 / 255f), new Color (22 / 255f, 194 / 255f, 219 / 255f),
 			new Color (0 / 255f, 95 / 255f, 209 / 255f), new Color (27 / 255f, 50 / 255f, 148 / 255f), new Color (35 / 255f, 51 / 255f, 142 / 255f),
 			new Color (63 / 255f, 32 / 255f, 123 / 255f), new Color (71 / 255f, 16 / 255f, 117 / 255f), new Color (85 / 255f, 0 / 255f, 93 / 255f),
@@ -44,7 +59,7 @@ public class BGmanager : MonoBehaviour {
 
 	}
 
-	public void GenetareWaterF(){
+	public void GenerateWaterF(){
 		Transform startPos = FishGenerate.Instance.startPosition;
 		int Count = UIManager.Instance.diveDepth / -20;
 		float screenMid = startPos.position.x;
@@ -56,4 +71,44 @@ public class BGmanager : MonoBehaviour {
 		}
 	}
 
+	public void GenerateParallx(){
+		int parallaxIndexTemp=0;
+		int stoneIndexTemp=0;
+		int parallaxIndex =0;
+		int stoneIndex = 0;
+
+		int Count = UIManager.Instance.diveDepth / -2;
+		float baseGeneratePosy = -20 ;
+
+		for (int i = 0; i < Count; i++) {			
+			float offset = Random.Range (-2, 2);
+			while (true) {
+				parallaxIndexTemp = Random.Range (0, parallax.Length);
+				if (parallaxIndex != parallaxIndexTemp) {
+					parallaxIndex = parallaxIndexTemp;
+					break;
+				}
+			}
+			Transform[] getParallax = parallax [parallaxIndex];
+			while (true) {
+				stoneIndexTemp = Random.Range (0, getParallax.Length);
+				if (stoneIndex != stoneIndexTemp) {
+					stoneIndex = stoneIndexTemp;
+					break;
+				}
+			}
+			//print ("parallaxIndex"+parallaxIndex);
+			//print ("stoneIndex"+stoneIndex);
+
+			Transform trans = getParallax [stoneIndex];
+			if (trans.name.StartsWith ("l_")) {
+				GameObject.Instantiate (trans, new Vector3 (leftScreen-0.03f, baseGeneratePosy + offset, parallaxIndex - 5), trans.transform.rotation, parallaxBg[parallaxIndex]);
+			} else {
+				GameObject.Instantiate (trans, new Vector3 (rightScreen+0.03f, baseGeneratePosy + offset, parallaxIndex - 5), trans.transform.rotation, parallaxBg[parallaxIndex]);
+			}
+				
+			
+			baseGeneratePosy -= 4;
+		}
+	}
 }

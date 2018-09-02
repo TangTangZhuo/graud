@@ -25,13 +25,14 @@ public class NetController : MonoBehaviour {
 	void Update () {
 		if (ProgressManager.Instance.isRunning) {
 			lookat (player);
-			if (Mathf.Abs( transform.position.x - player.position.x) > 0.05) {
+			if (Mathf.Abs( transform.position.x - player.position.x) > 0.1) {
 				transform.DOMoveX (player.position.x, 0.3f, false);
 			}
 			transform.position = new Vector3 (transform.position.x, player.position.y + distance, 0);
 		} else if(ProgressManager.Instance.isOver) {
 			SubmarineController.Instance.moveSpeed = 0;
-			SubmarineController.Instance.gravityScale = 0;
+//			transform.DOPause();
+//			SubmarineController.Instance.gravityScale = 0;
 //			if (playerRig.velocity != Vector2.zero) {
 //				transform.DOMove (new Vector3 (transform.position.x, player.position.y - distance, 0), 1f, false).OnComplete(()=>{
 //					transform.position = new Vector3 (transform.position.x, player.position.y + distance, 0);
@@ -44,6 +45,7 @@ public class NetController : MonoBehaviour {
 //				transform.DOMoveX (player.position.x, 0.3f, false).OnComplete (() => {
 //					isOver = true;
 //				});
+//				SubmarineController.Instance.gravityScale = 0;
 				transform.DOPause();
 				isOver = true;
 			}
@@ -51,13 +53,14 @@ public class NetController : MonoBehaviour {
 				if (Mathf.Abs (transform.localEulerAngles.z) > 10) {
 					playerRig.velocity = Vector3.zero;
 					SubmarineController.Instance.gravityScale = 0;
+					//transform.position = new Vector3 (player.position.x, transform.position.y, transform.position.z);
 					transform.RotateAround (player.position, player.forward, roSpeed);
 					//transform.DORotate (new Vector3 (transform.localEulerAngles.x, transform.localEulerAngles.y, 0), 1f, RotateMode.Fast);
 				} else if (Mathf.Abs (transform.localEulerAngles.z) <= 10) {
 					transform.localEulerAngles = new Vector3 (transform.localEulerAngles.x, transform.localEulerAngles.y, 0);
-					playerRig.velocity = new Vector3 (0, playerRig.velocity.y, 0);
+					//	playerRig.velocity = new Vector3 (0, playerRig.velocity.y, 0);
 					SubmarineController.Instance.gravityScale = player.position.y / 5;
-					transform.position = new Vector3 (transform.position.x, player.position.y - distance, 0);
+					transform.position = new Vector3 (player.position.x, player.position.y - distance,transform.position.z );
 				}
 			}
 		}else if (ProgressManager.Instance.isReady) {

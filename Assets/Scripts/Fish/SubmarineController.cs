@@ -41,7 +41,7 @@ public class SubmarineController : MonoBehaviour {
 		fishIndex = 0;
 		playerRig = GetComponent<Rigidbody2D> ();
 		if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android)
-			moveSpeed = 1;
+			moveSpeed = 0.5f;
 		else
 			moveSpeed = 10;
 		playerRig.gravityScale = 0;
@@ -70,9 +70,11 @@ public class SubmarineController : MonoBehaviour {
 
 				if (Input.GetKey (KeyCode.A)) {
 					transform.rotation = Quaternion.Euler (0, 180, 0);
+				//	playerRig.MovePosition (playerRig.position + new Vector2 (-moveSpeed * Time.deltaTime, playerRig.velocity.y*Time.deltaTime));
 					transform.Translate (new Vector3 (-moveSpeed * Time.deltaTime, 0, 0), Space.World);			
 				} else if (Input.GetKey (KeyCode.D)) {
 					transform.rotation = Quaternion.Euler (0, 0, 0);
+				//	playerRig.MovePosition (playerRig.position + new Vector2 (moveSpeed * Time.deltaTime, playerRig.velocity.y*Time.deltaTime));
 					transform.Translate (new Vector3 (moveSpeed * Time.deltaTime, 0, 0), Space.World);
 				}
 			}
@@ -85,7 +87,8 @@ public class SubmarineController : MonoBehaviour {
 					Transform fish = netParent.GetChild (fishIndex);
 					Settlement (fish, 0.3f);
 					if (PlayerPrefs.GetInt (fish.name.Split (new char[]{ '(' }) [0], 0)==0) {
-						Illustration.Instance.illNew.SetActive (true);
+						PlayerPrefs.SetInt ("illNew", 1);
+						//Illustration.Instance.illNew.SetActive (true);
 					}
 					PlayerPrefs.SetInt (fish.name.Split (new char[]{'('}) [0], 1);
 					ScoreGenerate (fish);
@@ -109,7 +112,8 @@ public class SubmarineController : MonoBehaviour {
 					fish.GetComponent<SpriteRenderer> ().DOFade (0f, 0.3f);
 					fish.DOMoveY (netParent.GetChild (fishIndex).position.y+0.3f, 0.3f, false);
 					if (PlayerPrefs.GetInt (fish.name.Split (new char[]{ '(' }) [0], 0)==0) {
-						Illustration.Instance.illNew.SetActive (true);
+						PlayerPrefs.SetInt ("illNew", 1);
+						//Illustration.Instance.illNew.SetActive (true);
 					}
 					PlayerPrefs.SetInt (fish.name.Split (new char[]{'('}) [0], 1);
 					ScoreGenerate (fish);
@@ -119,7 +123,9 @@ public class SubmarineController : MonoBehaviour {
 			}
 		}
 
-		//playerRig.position = new Vector3 (Mathf.Clamp (playerRig.position.x,boundL.position.x,boundR.position.x), playerRig.position.y, 0);
+		//playerRig.position = new Vector3 (Mathf.Clamp (playerRig.position.x,boundL.position.x,boundR.position.x), playerRig.position.y, transform.position.z);
+		//transform.position = new Vector2 (Mathf.Clamp (transform.position.x, boundL.position.x, boundR.position.x), transform.position.y);
+
 	}
 
 	void OnTriggerEnter2D(Collider2D collider){
@@ -132,24 +138,90 @@ public class SubmarineController : MonoBehaviour {
 				isSettle = true;
 			}
 		}
+
 		if (collider.tag == "BoundaryL") {
-			moveSpeed = 0;
-			playerRig.AddForce (Vector2.right * force);
-			Invoke ("ReMoveSpeed", 0.5f);
+			if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android) {
+				if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Moved) {
+					if (Input.GetTouch (0).deltaPosition.x < 0) {
+						moveSpeed = 0;
+					} else {
+						moveSpeed = 0.5f;
+					}
+				} 
+			}
+			else {
+				if (Input.GetKey (KeyCode.A)) {
+					moveSpeed = 0;
+				} else {
+					moveSpeed = 10;
+				}
+			}
 		}
 		if (collider.tag == "BoundaryR") {
-			moveSpeed = 0;
-			playerRig.AddForce (Vector2.left * force);
-			Invoke ("ReMoveSpeed", 0.5f);
+			if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android) {
+				if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Moved) {
+					if (Input.GetTouch (0).deltaPosition.x > 0) {
+						moveSpeed = 0;
+					} else {
+						moveSpeed = 0.5f;
+					}
+				} 
+			} else {
+				if (Input.GetKey (KeyCode.D)) {
+					moveSpeed = 0;
+				} else {
+					moveSpeed = 10;
+				}
+			}
 		}
+		
+	}
+
+	void OnTriggerStay2D(Collider2D collider){
+		if (collider.tag == "BoundaryL") {
+			if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android) {
+				if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Moved) {
+					if (Input.GetTouch (0).deltaPosition.x < 0) {
+						moveSpeed = 0;
+					} else {
+						moveSpeed = 0.5f;
+					}
+				} 
+			}
+			else {
+				if (Input.GetKey (KeyCode.A)) {
+					moveSpeed = 0;
+				} else {
+					moveSpeed = 10;
+				}
+			}
+		}
+		if (collider.tag == "BoundaryR") {
+			if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android) {
+				if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Moved) {
+					if (Input.GetTouch (0).deltaPosition.x > 0) {
+						moveSpeed = 0;
+					} else {
+						moveSpeed = 0.5f;
+					}
+				} 
+			} else {
+				if (Input.GetKey (KeyCode.D)) {
+					moveSpeed = 0;
+				} else {
+					moveSpeed = 10;
+				}
+			}
+		}
+		transform.position = new Vector2 (Mathf.Clamp (transform.position.x, boundL.position.x, boundR.position.x), transform.position.y);
 	}
 		
-	void ReMoveSpeed(){
-		if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android)
-			moveSpeed = 1;
-		else
-			moveSpeed = 10;
-	}
+//	void ReMoveSpeed(){
+//		if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android)
+//			moveSpeed = 0.5f;
+//		else
+//			moveSpeed = 10;
+//	}
 //	public void OnPier(){
 //		if (ProgressManager.Instance.isOver) {
 //			gravityScale = 0;

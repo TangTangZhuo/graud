@@ -35,6 +35,9 @@ public class Illustration : MonoBehaviour {
 		fishNumber = FishGenerate.Instance.fish.Length;
 
 		IllUpdate ();
+		if (PlayerPrefs.GetInt ("illNew", 0)==1) {
+			illNew.SetActive (true);
+		}
 	}
 	
 	// Update is called once per frame
@@ -68,6 +71,7 @@ public class Illustration : MonoBehaviour {
 			illustration.DOMoveY (illustration.position.y - screenHeight, 0.5f, false);
 			isShow = true;
 			illNew.SetActive (false);
+			PlayerPrefs.SetInt ("illNew", 0);
 		}
 	}
 

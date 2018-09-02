@@ -59,7 +59,8 @@ public class ProgressManager : MonoBehaviour {
 		else
 			SubmarineController.Instance.moveSpeed = 10;
 		FishGenerate.Instance.GenerateFish ();
-		BGmanager.Instance.GenetareWaterF ();
+		BGmanager.Instance.GenerateWaterF ();
+		BGmanager.Instance.GenerateParallx ();
 		SubmarineController.Instance.InitProgressSlider ();
 		HideUI ();
 		SubmarineController.Instance.progressSlider.gameObject.SetActive (true);
