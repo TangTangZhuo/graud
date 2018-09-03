@@ -95,7 +95,7 @@ public class SubmarineController : MonoBehaviour {
 				}
 				else if(fishIndex == netParent.childCount - 1){
 					Transform fish = netParent.GetChild (fishIndex);
-					fish.DOScale (4, 0.3f).OnComplete(()=>{
+					fish.DOScale (1, 0.3f).OnComplete(()=>{
 						isSettle = false;
 						MessageBox.Show("SALE REWARD","$"+goldSum);
 						MessageBox.confim=()=>{
@@ -110,7 +110,7 @@ public class SubmarineController : MonoBehaviour {
 							
 					});
 					fish.GetComponent<SpriteRenderer> ().DOFade (0f, 0.3f);
-					fish.DOMoveY (netParent.GetChild (fishIndex).position.y+0.3f, 0.3f, false);
+					fish.DOMoveY (netParent.GetChild (fishIndex).position.y+2f, 0.3f, false);
 					if (PlayerPrefs.GetInt (fish.name.Split (new char[]{ '(' }) [0], 0)==0) {
 						PlayerPrefs.SetInt ("illNew", 1);
 						//Illustration.Instance.illNew.SetActive (true);
@@ -233,8 +233,8 @@ public class SubmarineController : MonoBehaviour {
 //	}
 
 	void Settlement(Transform fish,float time){
-		fish.DOScale (4, time);
-		fish.DOMoveY (fish.position.y + 0.3f, time, false);
+		fish.DOScale (1, time);
+		fish.DOMoveY (fish.position.y + 2f, time, false);
 		fish.GetComponent<SpriteRenderer> ().DOFade (0f, time);
 	}
 
