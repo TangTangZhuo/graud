@@ -61,6 +61,7 @@ public class ProgressManager : MonoBehaviour {
 		FishGenerate.Instance.GenerateFish ();
 		BGmanager.Instance.GenerateWaterF ();
 		BGmanager.Instance.GenerateParallx ();
+		BGmanager.Instance.GenerateBubble ();
 		SubmarineController.Instance.InitProgressSlider ();
 		HideUI ();
 		SubmarineController.Instance.progressSlider.gameObject.SetActive (true);

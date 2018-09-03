@@ -7,6 +7,7 @@ public class BGmanager : MonoBehaviour {
 	int index;
 
 	public GameObject waterF;
+	public GameObject bubble;
 	public Transform[] parallax1;
 	public Transform[] parallax2;
 	public Transform[] parallax3;
@@ -68,6 +69,18 @@ public class BGmanager : MonoBehaviour {
 			float offset = Random.Range (-5, 6);
 			GameObject.Instantiate (waterF, new Vector3 (screenMid, baseGeneratePosy + offset ,0),waterF.transform.rotation,bg);
 			baseGeneratePosy -= 20;
+		}
+	}
+
+	public void GenerateBubble(){
+		Transform startPos = FishGenerate.Instance.startPosition;
+		int Count = UIManager.Instance.diveDepth / -10;
+		float screenMid = startPos.position.x;
+		float baseGeneratePosy = -20 ;
+		for (int i = 0; i < Count; i++) {			
+			float offset = Random.Range (-5, 6);
+			GameObject.Instantiate (bubble, new Vector3 (screenMid+Random.Range(-3f,3f), baseGeneratePosy + offset ,0),bubble.transform.rotation,bg);
+			baseGeneratePosy -= 8;
 		}
 	}
 
