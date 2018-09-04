@@ -35,10 +35,20 @@ public class Upgrading : MonoBehaviour {
 
 	void UpdateData(){
 		
-		UIManager.Instance.diveDepth = PlayerPrefs.GetInt ("valueDepth", -17);
+		if (PlayerPrefs.GetInt ("Level", 1) == 1) {
+			UIManager.Instance.diveDepth = PlayerPrefs.GetInt ("valueDepth", -17);
+			value = PlayerPrefs.GetInt ("valueDepth", UIManager.Instance.diveDepth);
+			price = PlayerPrefs.GetInt ("priceDepth", 281);
+		}else if (PlayerPrefs.GetInt ("Level", 1) == 2) {
+			UIManager.Instance.diveDepth = PlayerPrefs.GetInt ("valueDepth2", -17);
+			value = PlayerPrefs.GetInt ("valueDepth2", UIManager.Instance.diveDepth);
+			price = PlayerPrefs.GetInt ("priceDepth2", 281);
+		}else if (PlayerPrefs.GetInt ("Level", 1) == 3) {
+			UIManager.Instance.diveDepth = PlayerPrefs.GetInt ("valueDepth3", -17);
+			value = PlayerPrefs.GetInt ("valueDepth3", UIManager.Instance.diveDepth);
+			price = PlayerPrefs.GetInt ("priceDepth3", 281);
+		}
 
-		value = PlayerPrefs.GetInt ("valueDepth", UIManager.Instance.diveDepth);
-		price = PlayerPrefs.GetInt ("priceDepth", 281);
 		valueT.text = (value) + "M";
 		priceT.text = "$" + price;
 		
@@ -51,8 +61,18 @@ public class Upgrading : MonoBehaviour {
 			gold -= price;
 			UIManager.Instance.diveDepth -= 3;
 			price = (int)(price*1.25f);
-			PlayerPrefs.SetInt ("valueDepth", UIManager.Instance.diveDepth);
-			PlayerPrefs.SetInt ("priceDepth", price);
+
+			if (PlayerPrefs.GetInt ("Level", 1) == 1) {
+				PlayerPrefs.SetInt ("valueDepth", UIManager.Instance.diveDepth);
+				PlayerPrefs.SetInt ("priceDepth", price);
+			} else if (PlayerPrefs.GetInt ("Level", 1) == 2) {
+				PlayerPrefs.SetInt ("valueDepth2", UIManager.Instance.diveDepth);
+				PlayerPrefs.SetInt ("priceDepth2", price);
+			}else if (PlayerPrefs.GetInt ("Level", 1) == 3) {
+				PlayerPrefs.SetInt ("valueDepth3", UIManager.Instance.diveDepth);
+				PlayerPrefs.SetInt ("priceDepth3", price);
+			}
+
 			PlayerPrefs.SetInt ("gold", gold);
 			UpdateData ();
 			CheckGold ();

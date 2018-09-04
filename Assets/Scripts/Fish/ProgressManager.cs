@@ -36,7 +36,7 @@ public class ProgressManager : MonoBehaviour {
 		//CameraController.Instance.isMove = false;
 		//PlayerController.Instance.isMove = false;
 		//Invoke ("LoadScene", 0f);
-		SceneManager.LoadScene ("Main");
+		SceneManager.LoadScene ("Level1");
 	}
 
 	public void GameOver(){
@@ -45,7 +45,7 @@ public class ProgressManager : MonoBehaviour {
 	}
 
 	void LoadScene(){
-		SceneManager.LoadScene ("Main");
+		SceneManager.LoadScene ("Level1");
 	}
 
 	public void onStartButton(){
