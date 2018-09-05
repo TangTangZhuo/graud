@@ -10,13 +10,13 @@ public class NetController : MonoBehaviour {
 	public float roSpeed;
 
 	Rigidbody2D playerRig;
-	bool isWin;
 	bool isOver;
 	float distance;
+	float rotate;
 	// Use this for initialization
 	void Start () {
+		rotate = 0;
 		isOver = false;
-		isWin = false;
 		playerRig = player.GetComponent<Rigidbody2D> ();
 		distance = Vector3.Distance (transform.position, player.position);
 	}
@@ -50,14 +50,35 @@ public class NetController : MonoBehaviour {
 				isOver = true;
 			}
 			if (isOver) {
-				if (Mathf.Abs (transform.localEulerAngles.z) > 10) {
+				
+//				if (Mathf.Abs (transform.localEulerAngles.z) > 10) {
+//					playerRig.velocity = Vector3.zero;
+//					SubmarineController.Instance.gravityScale = 0;
+//					//transform.position = new Vector3 (player.position.x, transform.position.y, transform.position.z);
+//					transform.RotateAround (player.position, player.forward, roSpeed);
+//					//transform.DORotate (new Vector3 (transform.localEulerAngles.x, transform.localEulerAngles.y, 0), 1f, RotateMode.Fast);
+//				} else if (Mathf.Abs (transform.localEulerAngles.z) <= 10) {
+//					transform.localEulerAngles = new Vector3 (transform.localEulerAngles.x, transform.localEulerAngles.y, 0);
+//					//	playerRig.velocity = new Vector3 (0, playerRig.velocity.y, 0);
+//					SubmarineController.Instance.gravityScale = player.position.y / 5;
+//					transform.position = new Vector3 (player.position.x, player.position.y - distance,transform.position.z );
+//				}
+
+//				print (Mathf.Abs( transform.localEulerAngles.x));
+//				transform.RotateAround (player.position, -transform.right, roSpeed);
+//
+//				playerRig.velocity = Vector3.zero;
+//				SubmarineController.Instance.gravityScale = 0;
+//
+				if (rotate <= 180) {
 					playerRig.velocity = Vector3.zero;
 					SubmarineController.Instance.gravityScale = 0;
 					//transform.position = new Vector3 (player.position.x, transform.position.y, transform.position.z);
-					transform.RotateAround (player.position, player.forward, roSpeed);
+					transform.RotateAround (player.position, -player.right, roSpeed);
+					rotate += roSpeed;
 					//transform.DORotate (new Vector3 (transform.localEulerAngles.x, transform.localEulerAngles.y, 0), 1f, RotateMode.Fast);
-				} else if (Mathf.Abs (transform.localEulerAngles.z) <= 10) {
-					transform.localEulerAngles = new Vector3 (transform.localEulerAngles.x, transform.localEulerAngles.y, 0);
+				} else  {
+					transform.localEulerAngles = new Vector3 (165, 0,  -180);
 					//	playerRig.velocity = new Vector3 (0, playerRig.velocity.y, 0);
 					SubmarineController.Instance.gravityScale = player.position.y / 5;
 					transform.position = new Vector3 (player.position.x, player.position.y - distance,transform.position.z );

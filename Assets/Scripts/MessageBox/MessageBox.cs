@@ -5,11 +5,15 @@ using DG.Tweening;
 namespace Common
 {
 	public delegate void Confim();
+	public delegate void Cancle();
+	public delegate void DoubleR();
 	public class MessageBox 
 	{
 		static GameObject Messagebox;
-		static int Result = -1;
+//		static int Result = -1;
 		public static Confim confim;
+		public static Cancle cancle;
+		public static DoubleR doubleR;
 		public static string TitleStr;
 		public static string ContentStr;
 
@@ -69,9 +73,16 @@ namespace Common
 		public static void Double()
 		{
 			if (Messagebox.tag == "PopBG") {
+				if (doubleR != null) {
+					doubleR ();
+					GameObject.Destroy (Messagebox);
+				}
 			}
 			if (Messagebox.tag == "PurchasePop") {	
-				GameObject.Destroy(Messagebox);
+				if (cancle != null) {
+					cancle ();
+					GameObject.Destroy (Messagebox);
+				}
 			}
 //			Result = 2;
 //			GameObject.Destroy(Messagebox);

@@ -9,9 +9,16 @@ public class TimeManager : MonoBehaviour {
 	DateTime currentDate;
 	DateTime oldDate;
 
+	int messageCount;
+	void Awake(){
+		messageCount = 0;
+	}
+
 	void Start()
 	{		
-
+		if (PlayerPrefs.GetInt ("offlineOnClick", 0) == 1) {
+			UpdateGold ();
+		}
 	}
 
 	void OnApplicationQuit()
@@ -24,7 +31,7 @@ public class TimeManager : MonoBehaviour {
 		if (isPause) {
 			PlayerPrefs.SetString("sysString", System.DateTime.Now.ToBinary().ToString());
 		} else {
-				UpdateGold ();
+			UpdateGold ();
 		}
 	}
 
@@ -44,18 +51,32 @@ public class TimeManager : MonoBehaviour {
 		return difference.Minutes;
 	}
 
-	void UpdateGold(){
-		int min = OfflineTime ();
-		if (min > 0) {
-			MessageBox.Show ("OFFLINE REWARD", "$" + min * PlayerPrefs.GetInt ("valueOffline", 4));
-			MessageBox.confim=()=>{
-				int gold = PlayerPrefs.GetInt ("gold", 0) + min * PlayerPrefs.GetInt ("valueOffline", 4);
-				PlayerPrefs.SetInt ("gold", gold);
-				UIManager.Instance.goldT.text = gold.ToString ();
-				Upgrading.Instance.CheckGold ();
-				UpgradingOffline.Instance.CheckGold ();
-				PlayerPrefs.SetString("sysString", System.DateTime.Now.ToBinary().ToString());
-			};
+	public void UpdateGold(){
+		if (messageCount == 0) {
+			int min = OfflineTime ();
+			if (min > 0) {
+				MessageBox.Show ("OFFLINE REWARD", "$" + min * PlayerPrefs.GetInt ("valueOffline", 4));
+				PlayerPrefs.SetInt ("offlineOnClick", 1);
+				messageCount++;
+				MessageBox.confim = () => {
+					int gold = PlayerPrefs.GetInt ("gold", 0) + min * PlayerPrefs.GetInt ("valueOffline", 4);
+					OnMessageBoxBtn(gold);
+				};
+				MessageBox.doubleR = () => {
+					int gold = PlayerPrefs.GetInt ("gold", 0) + min * PlayerPrefs.GetInt ("valueOffline", 4)*2;
+					OnMessageBoxBtn(gold);
+				};
+			}
 		}
+	}
+
+	void OnMessageBoxBtn(int gold){
+		PlayerPrefs.SetInt ("gold", gold);
+		UIManager.Instance.goldT.text = gold.ToString ();
+		Upgrading.Instance.CheckGold ();
+		UpgradingOffline.Instance.CheckGold ();
+		PlayerPrefs.SetString ("sysString", System.DateTime.Now.ToBinary ().ToString ());	
+		PlayerPrefs.SetInt ("offlineOnClick", 2);
+		messageCount=0;
 	}
 }

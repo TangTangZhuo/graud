@@ -6,9 +6,9 @@ public class StepGenerate : MonoBehaviour {
 	public Transform[] steps;
 	public Transform preStep;
 	public Transform end;
-	int currentLevel;
+//	int currentLevel;
 	float leftScreen;
-	float rightScreen;
+//	float rightScreen;
 	float startPos;
 	bool isFinishGenerate;
 
@@ -16,15 +16,15 @@ public class StepGenerate : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		currentLevel = 30;
-		int abc = GetStepNumber (currentLevel) [0];
-		int de = GetStepNumber (currentLevel) [1];
+//		currentLevel = 30;
+//		int abc = GetStepNumber (currentLevel) [0];
+//		int de = GetStepNumber (currentLevel) [1];
 		//stepsNumber = new int[]{abc, abc, abc, de, de};
 		startPos = preStep.position.y;
 		stepsNumber = new int[]{4, 4, 4, 4, 4,4,4,4,4};
 		isFinishGenerate = false;
 		leftScreen = Camera.main.ViewportToWorldPoint (new Vector3 (0, 0, 0)).x;
-		rightScreen = Camera.main.ViewportToWorldPoint (new Vector3 (1, 0, 0)).x;
+//		rightScreen = Camera.main.ViewportToWorldPoint (new Vector3 (1, 0, 0)).x;
 	}
 	
 	// Update is called once per frame

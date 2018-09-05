@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour {
 	public bool isMove;
 	public Transform lightning;
 	public float lightningSpeed;
-	private float addSpeed;
+//	private float addSpeed;
 	float sliderValue=0;
 	float badSliderValue=0;
 
@@ -35,16 +35,16 @@ public class PlayerController : MonoBehaviour {
 		} else {
 		//	moveSpeed = 1;
 		}
-		addSpeed = 0;
+//		addSpeed = 0;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (playerRig.velocity.y < -6) {
-			addSpeed = moveSpeed * playerRig.velocity.y / -6f - moveSpeed;
-		} else {
-			addSpeed = 0;
-		}
+//		if (playerRig.velocity.y < -6) {
+//			addSpeed = moveSpeed * playerRig.velocity.y / -6f - moveSpeed;
+//		} else {
+//			addSpeed = 0;
+//		}
 		if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android) {
 			if (isMove) {
 				//if (playerRig.velocity.y <= 0) {

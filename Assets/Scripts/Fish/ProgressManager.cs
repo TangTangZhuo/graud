@@ -23,6 +23,7 @@ public class ProgressManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		InitScene ();
 		isReady = true;
 		isRunning = false;
 		isOver = false;
@@ -36,7 +37,7 @@ public class ProgressManager : MonoBehaviour {
 		//CameraController.Instance.isMove = false;
 		//PlayerController.Instance.isMove = false;
 		//Invoke ("LoadScene", 0f);
-		SceneManager.LoadScene ("Level1");
+		LoadScene();
 	}
 
 	public void GameOver(){
@@ -45,7 +46,23 @@ public class ProgressManager : MonoBehaviour {
 	}
 
 	void LoadScene(){
-		SceneManager.LoadScene ("Level1");
+		int levelIndex = PlayerPrefs.GetInt ("Level", 1);
+		if (levelIndex == 1) {
+			SceneManager.LoadScene ("Level1");
+		}
+		if (levelIndex == 2) {
+			SceneManager.LoadScene ("Level2");
+		}
+		if (levelIndex == 3) {
+			SceneManager.LoadScene ("Level3");
+		}
+	}
+
+	void InitScene(){
+		string levelIndex = PlayerPrefs.GetInt ("Level", 1).ToString();
+		if (!SceneManager.GetActiveScene ().name.EndsWith (levelIndex)) {
+			LoadScene ();
+		}
 	}
 
 	public void onStartButton(){

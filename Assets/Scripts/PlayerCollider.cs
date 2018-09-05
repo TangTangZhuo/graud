@@ -7,11 +7,11 @@ public class PlayerCollider : MonoBehaviour {
 	public float force;
 	public ParticleSystem destroyParticle;
 	public Transform particleParent;
-	float movespeed;
+//	float movespeed;
 	// Use this for initialization
 	void Start () {
 		playerRig = transform.GetComponent<Rigidbody2D> ();
-		movespeed = PlayerController.Instance.moveSpeed;
+//		movespeed = PlayerController.Instance.moveSpeed;
 	}
 	
 	// Update is called once per frame

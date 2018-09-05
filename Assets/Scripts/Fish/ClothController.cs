@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ClothController : MonoBehaviour {
-	Cloth cloth;
+//	Cloth cloth;
 
 	private static ClothController instance;
 	public static ClothController Instance{
@@ -15,7 +15,7 @@ public class ClothController : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-		cloth = GetComponent<Cloth> ();
+//		cloth = GetComponent<Cloth> ();
 	}
 	
 	// Update is called once per frame

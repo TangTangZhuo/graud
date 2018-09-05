@@ -5,9 +5,12 @@ using DG.Tweening;
 
 public class Shake : MonoBehaviour {
 	float time;
+
+	bool stopShake;
 	// Use this for initialization
 	void Start () {
 		time = 2;
+		stopShake = false;
 	}
 	
 	// Update is called once per frame
@@ -21,5 +24,11 @@ public class Shake : MonoBehaviour {
 			}
 
 		}
-	}
+		if (ProgressManager.Instance.isRunning) {
+			if (!stopShake) {
+				transform.DOPause ();
+				stopShake = true;
+			}
+		}
+	}	
 }
