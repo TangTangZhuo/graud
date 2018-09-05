@@ -46,7 +46,7 @@ public class NetController : MonoBehaviour {
 //					isOver = true;
 //				});
 //				SubmarineController.Instance.gravityScale = 0;
-				transform.DOPause();
+				transform.DOKill(false);
 				isOver = true;
 			}
 			if (isOver) {

@@ -59,8 +59,8 @@ public class Upgrading : MonoBehaviour {
 	public void OnDepthClick(){
 		if (gold > price) {
 			gold -= price;
-			UIManager.Instance.diveDepth -= 3;
-			price = (int)(price*1.25f);
+			UIManager.Instance.diveDepth -= 7;
+			price = (int)(price*1.5f);
 
 			if (PlayerPrefs.GetInt ("Level", 1) == 1) {
 				PlayerPrefs.SetInt ("valueDepth", UIManager.Instance.diveDepth);

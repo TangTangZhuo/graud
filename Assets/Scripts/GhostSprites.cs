@@ -79,6 +79,7 @@ public class GhostSprites : MonoBehaviour
 	private int zAnchor;
 	private float alpha;
     private bool killSwitch;
+	private Transform ghosts;
 	
 	#endregion
 	
@@ -110,7 +111,8 @@ public class GhostSprites : MonoBehaviour
 		hasRigidBody2D = this.gameObject.GetComponent<Rigidbody2D>() != null ? true : false;
 		
 		ghostMaterial.Reverse();
-		
+
+		ghosts = GameObject.Find ("Ghosts").transform;
 	}
 	
 	#region public methods
@@ -236,6 +238,7 @@ public class GhostSprites : MonoBehaviour
 			return;
 		}
 		GameObject g = new GameObject();
+		g.transform.SetParent (ghosts);
 		g.name = gameObject.name + " - GhostSprite";
 		g.AddComponent<SpriteRenderer>();
 		g.transform.position = position;

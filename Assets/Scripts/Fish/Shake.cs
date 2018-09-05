@@ -26,7 +26,7 @@ public class Shake : MonoBehaviour {
 		}
 		if (ProgressManager.Instance.isRunning) {
 			if (!stopShake) {
-				transform.DOPause ();
+				transform.DOKill (false);
 				stopShake = true;
 			}
 		}

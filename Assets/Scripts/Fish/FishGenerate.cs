@@ -27,6 +27,7 @@ public class FishGenerate : MonoBehaviour {
 		typeDistance = 10;
 		euler = new int[]{ 180, 0 };
 //		diveDepth = UIManager.Instance.diveDepth;
+//		PlayerPrefs.DeleteAll();
 	}
 	
 	// Update is called once per frame
@@ -46,6 +47,14 @@ public class FishGenerate : MonoBehaviour {
 					Transform.Instantiate (unusual[fishIndex], new Vector3 (screenMid + Random.Range (-2, 3), baseGeneratePosy + Random.Range (-5, 6)), 
 						Quaternion.Euler (0, euler [Random.Range (0, 2)], 0), transform);
 				}
+				if (Random.Range (0, 20) == 10) {
+					if (fishIndex  > (fish.Length - 5)) {
+						fishIndex = fish.Length - 5;
+					}
+					Transform.Instantiate (fish[fishIndex+4], new Vector3 (screenMid + Random.Range (-2, 3), baseGeneratePosy + Random.Range (-5, 6)), 
+						Quaternion.Euler (0, euler [Random.Range (0, 2)], 0), transform);
+				}
+
 			}
 			i -= typeDistance;
 			counter++;

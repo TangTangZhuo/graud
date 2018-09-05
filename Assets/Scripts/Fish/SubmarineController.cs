@@ -92,6 +92,7 @@ public class SubmarineController : MonoBehaviour {
 					}
 					PlayerPrefs.SetInt (fish.name.Split (new char[]{'('}) [0], 1);
 					ScoreGenerate (fish);
+
 				}
 				else if(fishIndex == netParent.childCount - 1){
 					Transform fish = netParent.GetChild (fishIndex);
@@ -107,16 +108,26 @@ public class SubmarineController : MonoBehaviour {
 							//settleView.SetActive(true);
 							//settleView.transform.GetComponentInChildren<Text>().text = "$" + goldSum;
 						};
+						MessageBox.doubleR=()=>{
+							int gold = (PlayerPrefs.GetInt ("gold", 0) + goldSum)*2;
+							PlayerPrefs.SetInt ("gold", gold);
+							Upgrading.Instance.CheckGold();
+							UpgradingOffline.Instance.CheckGold();
+							ProgressManager.Instance.GameWin ();
+						};							
 							
 					});
 					fish.GetComponent<SpriteRenderer> ().DOFade (0f, 0.3f);
 					fish.DOMoveY (netParent.GetChild (fishIndex).position.y+2f, 0.3f, false);
+
+
 					if (PlayerPrefs.GetInt (fish.name.Split (new char[]{ '(' }) [0], 0)==0) {
 						PlayerPrefs.SetInt ("illNew", 1);
 						//Illustration.Instance.illNew.SetActive (true);
 					}
 					PlayerPrefs.SetInt (fish.name.Split (new char[]{'('}) [0], 1);
 					ScoreGenerate (fish);
+
 				}					
 				fishIndex++;
 				time = 0;
@@ -249,14 +260,14 @@ public class SubmarineController : MonoBehaviour {
 	}
 
 	void InitFishDic(){
-		fishDic.Add ("fish1(Clone)", 100);
-		fishDic.Add ("fish2(Clone)", 125);
-		fishDic.Add ("fish3(Clone)", 150);
-		fishDic.Add ("fish4(Clone)", 175);
-		fishDic.Add ("fish5(Clone)", 200);
-		fishDic.Add ("fish6(Clone)", 225);
-		fishDic.Add ("fish7(Clone)", 250);
-		fishDic.Add ("fish8(Clone)", 275);
+		fishDic.Add ("fish1(Clone)", 50);
+		fishDic.Add ("fish2(Clone)", 75);
+		fishDic.Add ("fish3(Clone)", 125);
+		fishDic.Add ("fish4(Clone)", 200);
+		fishDic.Add ("fish5(Clone)", 300);
+		fishDic.Add ("fish6(Clone)", 450);
+		fishDic.Add ("fish7(Clone)", 700);
+		fishDic.Add ("fish8(Clone)", 1000);
 
 		fishDic.Add ("unusual1(Clone)", fishDic["fish1(Clone)"]*2);
 		fishDic.Add ("unusual2(Clone)", fishDic["fish2(Clone)"]*2);
