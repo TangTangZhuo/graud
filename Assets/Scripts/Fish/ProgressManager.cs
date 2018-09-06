@@ -80,6 +80,7 @@ public class ProgressManager : MonoBehaviour {
 		SubmarineController.Instance.InitProgressSlider ();
 		HideUI ();
 		SubmarineController.Instance.progressSlider.gameObject.SetActive (true);
+		SubmarineController.Instance.SynDepth ();
 	}
 
 	void HideUI(){

@@ -296,4 +296,8 @@ public class SubmarineController : MonoBehaviour {
 		progressSlider.minValue = UIManager.Instance.diveDepth;
 		progressSlider.maxValue = 0;
 	}
+		
+	public void SynDepth(){
+		progressSlider.transform.Find ("depth").GetComponent<Text> ().text = UIManager.Instance.diveDepth+"M";
+	}
 }
