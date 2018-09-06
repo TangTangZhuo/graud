@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ClothController : MonoBehaviour {
-//	Cloth cloth;
 
 	private static ClothController instance;
 	public static ClothController Instance{
@@ -15,7 +14,6 @@ public class ClothController : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-//		cloth = GetComponent<Cloth> ();
 	}
 	
 	// Update is called once per frame
@@ -28,6 +26,5 @@ public class ClothController : MonoBehaviour {
 	}
 
 	public void Run(){
-	//	GameObject.Destroy (GameObject.Find ("shipside"));
 	}
 }

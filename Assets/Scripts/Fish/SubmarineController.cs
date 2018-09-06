@@ -23,6 +23,8 @@ public class SubmarineController : MonoBehaviour {
 	bool isSettle;
 	int fishIndex;
 	int goldSum;
+	int settleCount;
+	float settleTime;
 	Dictionary<string,int> fishDic = new Dictionary<string, int>();
 
 	private static SubmarineController instance;
@@ -36,6 +38,8 @@ public class SubmarineController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		settleCount = 0;
+		settleTime = 0;
 		time = 0;
 		isSettle = false;
 		fishIndex = 0;
@@ -70,11 +74,9 @@ public class SubmarineController : MonoBehaviour {
 
 				if (Input.GetKey (KeyCode.A)) {
 					transform.rotation = Quaternion.Euler (0, 180, 0);
-				//	playerRig.MovePosition (playerRig.position + new Vector2 (-moveSpeed * Time.deltaTime, playerRig.velocity.y*Time.deltaTime));
 					transform.Translate (new Vector3 (-moveSpeed * Time.deltaTime, 0, 0), Space.World);			
 				} else if (Input.GetKey (KeyCode.D)) {
 					transform.rotation = Quaternion.Euler (0, 0, 0);
-				//	playerRig.MovePosition (playerRig.position + new Vector2 (moveSpeed * Time.deltaTime, playerRig.velocity.y*Time.deltaTime));
 					transform.Translate (new Vector3 (moveSpeed * Time.deltaTime, 0, 0), Space.World);
 				}
 			}
@@ -82,21 +84,21 @@ public class SubmarineController : MonoBehaviour {
 		}
 		if (isSettle) {
 			time += Time.deltaTime;
-			if (time > 0.1f) {
-				if (fishIndex < netParent.childCount - 1) {
+			if (time > settleTime) {
+				if (fishIndex < settleCount) {
 					Transform fish = netParent.GetChild (fishIndex);
 					Settlement (fish, 0.3f);
 					if (PlayerPrefs.GetInt (fish.name.Split (new char[]{ '(' }) [0], 0)==0) {
 						PlayerPrefs.SetInt ("illNew", 1);
-						//Illustration.Instance.illNew.SetActive (true);
 					}
 					PlayerPrefs.SetInt (fish.name.Split (new char[]{'('}) [0], 1);
 					ScoreGenerate (fish);
 
 				}
-				else if(fishIndex == netParent.childCount - 1){
+				else if(fishIndex == settleCount){
 					Transform fish = netParent.GetChild (fishIndex);
 					fish.DOScale (1, 0.3f).OnComplete(()=>{
+						fish.GetComponent<SpriteRenderer> ().DOFade (0f, 0.3f);
 						isSettle = false;
 						MessageBox.Show("SALE REWARD","$"+goldSum);
 						MessageBox.confim=()=>{
@@ -105,25 +107,19 @@ public class SubmarineController : MonoBehaviour {
 							Upgrading.Instance.CheckGold();
 							UpgradingOffline.Instance.CheckGold();
 							ProgressManager.Instance.GameWin ();
-							//settleView.SetActive(true);
-							//settleView.transform.GetComponentInChildren<Text>().text = "$" + goldSum;
 						};
 						MessageBox.doubleR=()=>{
-							int gold = (PlayerPrefs.GetInt ("gold", 0) + goldSum)*2;
+							int gold = PlayerPrefs.GetInt ("gold", 0) + goldSum*2;
 							PlayerPrefs.SetInt ("gold", gold);
 							Upgrading.Instance.CheckGold();
 							UpgradingOffline.Instance.CheckGold();
 							ProgressManager.Instance.GameWin ();
 						};							
 							
-					});
-					fish.GetComponent<SpriteRenderer> ().DOFade (0f, 0.3f);
-					fish.DOMoveY (netParent.GetChild (fishIndex).position.y+2f, 0.3f, false);
-
+					});						
 
 					if (PlayerPrefs.GetInt (fish.name.Split (new char[]{ '(' }) [0], 0)==0) {
 						PlayerPrefs.SetInt ("illNew", 1);
-						//Illustration.Instance.illNew.SetActive (true);
 					}
 					PlayerPrefs.SetInt (fish.name.Split (new char[]{'('}) [0], 1);
 					ScoreGenerate (fish);
@@ -133,10 +129,20 @@ public class SubmarineController : MonoBehaviour {
 				time = 0;
 			}
 		}
+	}
 
-		//playerRig.position = new Vector3 (Mathf.Clamp (playerRig.position.x,boundL.position.x,boundR.position.x), playerRig.position.y, transform.position.z);
-		//transform.position = new Vector2 (Mathf.Clamp (transform.position.x, boundL.position.x, boundR.position.x), transform.position.y);
-
+	float GetSettleTime(int count){
+		if (count < 10) {
+			return 0.1f;
+		} else if (count >= 10 && count < 20) {
+			return 0.08f;
+		}else if (count >= 20 && count < 30) {
+			return 0.06f;
+		}else if (count >= 30 && count < 40) {
+			return 0.05f;
+		}else{
+			return 0.04f;
+		}
 	}
 
 	void OnTriggerEnter2D(Collider2D collider){
@@ -146,6 +152,8 @@ public class SubmarineController : MonoBehaviour {
 				playerRig.velocity = Vector3.zero;
 				ProgressManager.Instance.isReady = true;
 				ProgressManager.Instance.isOver = false;
+				settleCount = netParent.childCount - 1;
+				settleTime = GetSettleTime (settleCount);
 				isSettle = true;
 			}
 		}
@@ -226,27 +234,11 @@ public class SubmarineController : MonoBehaviour {
 		}
 		transform.position = new Vector2 (Mathf.Clamp (transform.position.x, boundL.position.x, boundR.position.x), transform.position.y);
 	}
-		
-//	void ReMoveSpeed(){
-//		if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android)
-//			moveSpeed = 0.5f;
-//		else
-//			moveSpeed = 10;
-//	}
-//	public void OnPier(){
-//		if (ProgressManager.Instance.isOver) {
-//			gravityScale = 0;
-//			playerRig.velocity = Vector3.zero;
-//			ProgressManager.Instance.isReady = true;
-//			ProgressManager.Instance.isOver = false;
-//			isSettle = true;
-//		}
-//	}
 
 	void Settlement(Transform fish,float time){
-		fish.DOScale (1, time);
-		fish.DOMoveY (fish.position.y + 2f, time, false);
-		fish.GetComponent<SpriteRenderer> ().DOFade (0f, time);
+		fish.DOScale (1, time).OnComplete(()=>{
+			fish.GetComponent<SpriteRenderer> ().DOFade (0f, time);
+		});
 	}
 
 	void ScoreGenerate(Transform fish){
@@ -268,15 +260,36 @@ public class SubmarineController : MonoBehaviour {
 		fishDic.Add ("fish6(Clone)", 450);
 		fishDic.Add ("fish7(Clone)", 700);
 		fishDic.Add ("fish8(Clone)", 1000);
+		fishDic.Add ("fish9(Clone)", 1600);
+		fishDic.Add ("fish10(Clone)", 2500);
+		fishDic.Add ("fish11(Clone)", 1000);
+		fishDic.Add ("fish12(Clone)", 2000);
+		fishDic.Add ("fish13(Clone)", 3000);
+		fishDic.Add ("fish14(Clone)", 4000);
+		fishDic.Add ("fish15(Clone)", 6000);
+		fishDic.Add ("fish16(Clone)", 9000);
+		fishDic.Add ("fish17(Clone)", 13500);
+		fishDic.Add ("fish18(Clone)", 20250);
+		fishDic.Add ("fish19(Clone)", 30375);
+		fishDic.Add ("fish20(Clone)", 45560);
+		fishDic.Add ("fish21(Clone)", 20340);
+		fishDic.Add ("fish22(Clone)", 30510);
+		fishDic.Add ("fish23(Clone)", 45765);
+		fishDic.Add ("fish24(Clone)", 65100);
+		fishDic.Add ("fish25(Clone)", 93200);
+		fishDic.Add ("fish26(Clone)", 125820);
+		fishDic.Add ("fish27(Clone)", 169850);
+		fishDic.Add ("fish28(Clone)", 229306);
+		fishDic.Add ("fish29(Clone)", 309564);
+		fishDic.Add ("fish30(Clone)", 417911);
 
-		fishDic.Add ("unusual1(Clone)", fishDic["fish1(Clone)"]*2);
-		fishDic.Add ("unusual2(Clone)", fishDic["fish2(Clone)"]*2);
-		fishDic.Add ("unusual3(Clone)", fishDic["fish3(Clone)"]*2);
-		fishDic.Add ("unusual4(Clone)", fishDic["fish4(Clone)"]*2);
-		fishDic.Add ("unusual5(Clone)", fishDic["fish5(Clone)"]*2);
-		fishDic.Add ("unusual6(Clone)", fishDic["fish6(Clone)"]*2);
-		fishDic.Add ("unusual7(Clone)", fishDic["fish7(Clone)"]*2);
-		fishDic.Add ("unusual8(Clone)", fishDic["fish8(Clone)"]*2);
+		AddUnusual (30);
+	}
+
+	void AddUnusual(int number){
+		for (int i = 1; i <= number; i++) {
+			fishDic.Add ("unusual"+i+"(Clone)", fishDic["fish"+i+"(Clone)"]*2);
+		}
 	}
 
 	public void InitProgressSlider(){

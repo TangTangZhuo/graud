@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FishGenerate : MonoBehaviour {
-//	private int diveDepth;
 	public Transform startPosition;
 	public Transform[] fish;
 	public Transform[] unusual;
@@ -26,8 +25,6 @@ public class FishGenerate : MonoBehaviour {
 		fishIndex = 0;
 		typeDistance = 10;
 		euler = new int[]{ 180, 0 };
-//		diveDepth = UIManager.Instance.diveDepth;
-//		PlayerPrefs.DeleteAll();
 	}
 	
 	// Update is called once per frame

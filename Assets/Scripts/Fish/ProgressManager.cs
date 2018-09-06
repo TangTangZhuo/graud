@@ -10,6 +10,7 @@ public class ProgressManager : MonoBehaviour {
 	public bool isReady;
 	public bool isRunning;
 	public bool isOver;
+	public bool isOvering;
 	public GameObject[] UIs;
 
 	private static ProgressManager instance;
@@ -27,6 +28,7 @@ public class ProgressManager : MonoBehaviour {
 		isReady = true;
 		isRunning = false;
 		isOver = false;
+		isOvering = false;
 	}
 	
 	// Update is called once per frame
@@ -34,9 +36,6 @@ public class ProgressManager : MonoBehaviour {
 	}
 
 	public void GameWin(){
-		//CameraController.Instance.isMove = false;
-		//PlayerController.Instance.isMove = false;
-		//Invoke ("LoadScene", 0f);
 		LoadScene();
 	}
 
@@ -68,8 +67,6 @@ public class ProgressManager : MonoBehaviour {
 	public void onStartButton(){
 		isRunning = true;
 		isReady = false;
-		//UIManager.Instance.startButton.SetActive (false);
-		//UIManager.Instance.upgrading.SetActive (false);
 		SubmarineController.Instance.gravityScale = 2;
 		if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android)
 			SubmarineController.Instance.moveSpeed = 1;
@@ -82,7 +79,6 @@ public class ProgressManager : MonoBehaviour {
 		SubmarineController.Instance.InitProgressSlider ();
 		HideUI ();
 		SubmarineController.Instance.progressSlider.gameObject.SetActive (true);
-//		ClothController.Instance.Run ();
 	}
 
 	void HideUI(){

@@ -81,8 +81,9 @@ namespace Common
 			if (Messagebox.tag == "PurchasePop") {	
 				if (cancle != null) {
 					cancle ();
-					GameObject.Destroy (Messagebox);
 				}
+				GameObject.Destroy (Messagebox);
+				
 			}
 //			Result = 2;
 //			GameObject.Destroy(Messagebox);
@@ -90,5 +91,6 @@ namespace Common
 //			ContentStr = null;
 			//Time.timeScale = 1;
 		}
+
 	}
 }

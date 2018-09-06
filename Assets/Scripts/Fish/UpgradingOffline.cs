@@ -49,7 +49,13 @@ public class UpgradingOffline : MonoBehaviour {
 	public void OnOfflineClick(){
 		if (gold > price) {
 			gold -= price;
-			UIManager.Instance.offlineGold += 4;
+
+			if (UIManager.Instance.offlineGold < 40) {
+				UIManager.Instance.offlineGold += 4;
+			} else {
+				UIManager.Instance.offlineGold = (int)(UIManager.Instance.offlineGold*1.25f);
+			}
+
 			price = (int)(price * 1.25f);
 			PlayerPrefs.SetInt ("valueOffline", UIManager.Instance.offlineGold);
 			PlayerPrefs.SetInt ("priceOffline", price);

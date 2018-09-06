@@ -32,7 +32,6 @@ public class Illustration : MonoBehaviour {
 	void Start () {
 		isShow = false;
 		screenHeight = Screen.height;
-		//fishNumber = FishGenerate.Instance.fish.Length;
 		fishNumber = fishImage.Length;
 		IllUpdate ();
 		if (PlayerPrefs.GetInt ("illNew", 0)==1) {

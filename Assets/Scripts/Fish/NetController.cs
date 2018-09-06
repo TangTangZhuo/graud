@@ -31,67 +31,27 @@ public class NetController : MonoBehaviour {
 			transform.position = new Vector3 (transform.position.x, player.position.y + distance, 0);
 		} else if(ProgressManager.Instance.isOver) {
 			SubmarineController.Instance.moveSpeed = 0;
-//			transform.DOPause();
-//			SubmarineController.Instance.gravityScale = 0;
-//			if (playerRig.velocity != Vector2.zero) {
-//				transform.DOMove (new Vector3 (transform.position.x, player.position.y - distance, 0), 1f, false).OnComplete(()=>{
-//					transform.position = new Vector3 (transform.position.x, player.position.y + distance, 0);
-//					player.DOMove(GameObject.FindWithTag("Pier").transform.position,2f,false).OnComplete(()=>{
-//						SubmarineController.Instance.OnPier();
-//					});
-//				});
-//			}
 			if (!isOver) {
-//				transform.DOMoveX (player.position.x, 0.3f, false).OnComplete (() => {
-//					isOver = true;
-//				});
-//				SubmarineController.Instance.gravityScale = 0;
 				transform.DOKill(false);
 				isOver = true;
 			}
 			if (isOver) {
-				
-//				if (Mathf.Abs (transform.localEulerAngles.z) > 10) {
-//					playerRig.velocity = Vector3.zero;
-//					SubmarineController.Instance.gravityScale = 0;
-//					//transform.position = new Vector3 (player.position.x, transform.position.y, transform.position.z);
-//					transform.RotateAround (player.position, player.forward, roSpeed);
-//					//transform.DORotate (new Vector3 (transform.localEulerAngles.x, transform.localEulerAngles.y, 0), 1f, RotateMode.Fast);
-//				} else if (Mathf.Abs (transform.localEulerAngles.z) <= 10) {
-//					transform.localEulerAngles = new Vector3 (transform.localEulerAngles.x, transform.localEulerAngles.y, 0);
-//					//	playerRig.velocity = new Vector3 (0, playerRig.velocity.y, 0);
-//					SubmarineController.Instance.gravityScale = player.position.y / 5;
-//					transform.position = new Vector3 (player.position.x, player.position.y - distance,transform.position.z );
-//				}
-
-//				print (Mathf.Abs( transform.localEulerAngles.x));
-//				transform.RotateAround (player.position, -transform.right, roSpeed);
-//
-//				playerRig.velocity = Vector3.zero;
-//				SubmarineController.Instance.gravityScale = 0;
-//
 				if (rotate <= 180) {
 					playerRig.velocity = Vector3.zero;
 					SubmarineController.Instance.gravityScale = 0;
-					//transform.position = new Vector3 (player.position.x, transform.position.y, transform.position.z);
 					transform.RotateAround (player.position, -player.right, roSpeed);
 					rotate += roSpeed;
-					//transform.DORotate (new Vector3 (transform.localEulerAngles.x, transform.localEulerAngles.y, 0), 1f, RotateMode.Fast);
+					ProgressManager.Instance.isOvering = true;
 				} else  {
 					transform.localEulerAngles = new Vector3 (165, 0,  -180);
-					//	playerRig.velocity = new Vector3 (0, playerRig.velocity.y, 0);
 					SubmarineController.Instance.gravityScale = player.position.y / 5;
 					transform.position = new Vector3 (player.position.x, player.position.y - distance,transform.position.z );
+					ProgressManager.Instance.isOvering = false;
+					transform.Find ("net").DOLocalMoveZ (-0.05f, 0.5f, false);
 				}
 			}
 		}else if (ProgressManager.Instance.isReady) {
-//			UIManager.Instance.startButton.SetActive (true);
-//			if (Mathf.Abs (transform.localEulerAngles.z) > 175&&Mathf.Abs (transform.localEulerAngles.z) < 185) {
-//				playerRig.velocity = Vector3.zero;
-//				playerRig.gravityScale = 0;
-//				transform.RotateAround (player.position, player.forward, roSpeed);
-//			}
-//			ProgressManager.Instance.GameWin();
+
 		}
 	}
 		

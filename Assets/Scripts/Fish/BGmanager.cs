@@ -110,8 +110,6 @@ public class BGmanager : MonoBehaviour {
 					break;
 				}
 			}
-			//print ("parallaxIndex"+parallaxIndex);
-			//print ("stoneIndex"+stoneIndex);
 
 			Transform trans = getParallax [stoneIndex];
 			if (trans.name.StartsWith ("l_")) {

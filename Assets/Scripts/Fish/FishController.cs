@@ -19,7 +19,7 @@ public class FishController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (!isFished && ProgressManager.Instance.isRunning) {
+		if (!isFished ) {
 			if (transform.eulerAngles.y == 180) {
 				if (transform.position.x > rightScreen) {
 					transform.eulerAngles = new Vector3 (0, 0, 0);
@@ -37,8 +37,9 @@ public class FishController : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
-		if (other.tag == "Net") {
+		if (other.tag == "Net" && !ProgressManager.Instance.isOvering && !ProgressManager.Instance.isReady) {
 			isFished = true;
+			Destroy (GetComponent<BoxCollider2D> ());
 		}
 	}
 }
