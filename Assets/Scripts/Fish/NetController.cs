@@ -47,7 +47,7 @@ public class NetController : MonoBehaviour {
 					SubmarineController.Instance.gravityScale = player.position.y / 5;
 					transform.position = new Vector3 (player.position.x, player.position.y - distance,transform.position.z );
 					ProgressManager.Instance.isOvering = false;
-					transform.Find ("net").DOLocalMoveZ (-0.05f, 0.5f, false);
+					transform.Find ("net").DOLocalMoveZ (-0.5f, 0.5f, false);
 				}
 			}
 		}else if (ProgressManager.Instance.isReady) {

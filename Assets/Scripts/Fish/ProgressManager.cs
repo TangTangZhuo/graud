@@ -62,6 +62,7 @@ public class ProgressManager : MonoBehaviour {
 		if (!SceneManager.GetActiveScene ().name.EndsWith (levelIndex)) {
 			LoadScene ();
 		}
+
 	}
 
 	public void onStartButton(){
