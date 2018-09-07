@@ -53,8 +53,13 @@ public class NetController : MonoBehaviour {
 					if (!isNetDoMove) {
 						net.DOLocalMoveZ (-0.5f, 0.5f, false);
 						net.DOLocalMoveY (net.localPosition.y - 0.3f, 0.5f, false);
+//						net.DOPunchPosition (Vector3.down/5, 5, 7, 0, false);
 						isNetDoMove = true;
 					}
+//					if (net.position.y > -10) {
+//						net.DOKill (false);
+//					}
+					//net.DOPunchPosition (transform.position + Vector3.down, 10, 10, 1, false);
 					//net.localPosition = new Vector3 (net.localPosition.x + 1f, net.localPosition.y, net.localPosition.z);
 				}
 			}
