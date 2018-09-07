@@ -37,7 +37,7 @@ public class FishGenerate : MonoBehaviour {
 		int counter = 0;
 		for (int i = (int)startPosition.position.y-2; i > UIManager.Instance.diveDepth; i+=0) {
 			float baseGeneratePosy = i - typeDistance / 2 ;
-			for (int num = 0; num < 5; num++) {
+			for (int num = 0; num < 10; num++) {
 				Transform.Instantiate (fish[fishIndex], new Vector3 (screenMid + Random.Range (-2, 3), baseGeneratePosy + Random.Range (-5, 6)), 
 					Quaternion.Euler (0, euler [Random.Range (0, 2)], 0), transform);
 				if (Random.Range (0, 20) == 10) {

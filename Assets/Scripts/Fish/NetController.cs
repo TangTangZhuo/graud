@@ -13,10 +13,12 @@ public class NetController : MonoBehaviour {
 	bool isOver;
 	float distance;
 	float rotate;
+	bool isNetDoMove;
 	// Use this for initialization
 	void Start () {
 		rotate = 0;
 		isOver = false;
+		isNetDoMove = false;
 		playerRig = player.GetComponent<Rigidbody2D> ();
 		distance = Vector3.Distance (transform.position, player.position);
 	}
@@ -47,7 +49,13 @@ public class NetController : MonoBehaviour {
 					SubmarineController.Instance.gravityScale = player.position.y / 5;
 					transform.position = new Vector3 (player.position.x, player.position.y - distance,transform.position.z );
 					ProgressManager.Instance.isOvering = false;
-					transform.Find ("net").DOLocalMoveZ (-0.5f, 0.5f, false);
+					Transform net = transform.Find ("net");
+					if (!isNetDoMove) {
+						net.DOLocalMoveZ (-0.5f, 0.5f, false);
+						net.DOLocalMoveY (net.localPosition.y - 0.3f, 0.5f, false);
+						isNetDoMove = true;
+					}
+					//net.localPosition = new Vector3 (net.localPosition.x + 1f, net.localPosition.y, net.localPosition.z);
 				}
 			}
 		}else if (ProgressManager.Instance.isReady) {

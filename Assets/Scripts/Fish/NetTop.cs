@@ -26,10 +26,15 @@ public class NetTop : MonoBehaviour {
 		if (collider.tag == "Fish"||collider.tag == "unusual") {	
 			if (!ProgressManager.Instance.isOvering && !ProgressManager.Instance.isReady) {
 				if (collider.tag == "unusual") {
-					collider.GetComponent<GhostSprites> ().alphaFluctuationDivisor = 0;
+					Destroy( collider.GetComponent<GhostSprites> ());
 				}
-				collider.transform.position = new Vector3 (transform.position.x + Random.Range (-0.4f, 0.4f), transform.position.y + Random.Range (-0.4f, 0.4f), 0.5f);
-				collider.transform.SetParent (transform);
+				if (ProgressManager.Instance.isRunning) {
+					collider.transform.position = new Vector3 (transform.position.x + Random.Range (-0.8f, 0.8f), transform.position.y + 0.2f + Random.Range (-0.5f, 0.4f), 0.5f);
+					collider.transform.SetParent (transform);
+				} else if (ProgressManager.Instance.isOver) {
+					collider.transform.position = new Vector3 (transform.position.x + Random.Range (-0.8f, 0.8f), transform.position.y -0.4f + Random.Range (0.4f, 0.9f), 0.5f);
+					collider.transform.SetParent (transform);
+				}
 			}
 		}
 	}

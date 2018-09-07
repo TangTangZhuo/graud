@@ -136,12 +136,14 @@ public class SubmarineController : MonoBehaviour {
 			return 0.1f;
 		} else if (count >= 10 && count < 20) {
 			return 0.08f;
-		}else if (count >= 20 && count < 30) {
+		} else if (count >= 20 && count < 30) {
 			return 0.06f;
-		}else if (count >= 30 && count < 40) {
+		} else if (count >= 30 && count < 40) {
 			return 0.05f;
-		}else{
+		} else if (count >= 40 && count < 50) {
 			return 0.04f;
+		} else {
+			return 0.02f;
 		}
 	}
 
@@ -153,8 +155,27 @@ public class SubmarineController : MonoBehaviour {
 				ProgressManager.Instance.isReady = true;
 				ProgressManager.Instance.isOver = false;
 				settleCount = netParent.childCount - 1;
+
+				if (PlayerPrefs.GetInt ("Level", 1) == 1) {
+					if (settleCount > PlayerPrefs.GetInt ("maxFish-1", 0)) {
+						PlayerPrefs.SetInt ("maxFish-1", settleCount);
+					}
+					PlayerPrefs.SetInt ("bestFish-1", PlayerPrefs.GetInt ("bestFish-1", 0) + settleCount);
+				}else if (PlayerPrefs.GetInt ("Level", 1) == 2) {
+					if (settleCount > PlayerPrefs.GetInt ("maxFish-2", 0)) {
+						PlayerPrefs.SetInt ("maxFish-2", settleCount);
+					}
+					PlayerPrefs.SetInt ("bestFish-2", PlayerPrefs.GetInt ("bestFish-2", 0) + settleCount);
+				}else if (PlayerPrefs.GetInt ("Level", 1) == 3) {
+					if (settleCount > PlayerPrefs.GetInt ("maxFish-3", 0)) {
+						PlayerPrefs.SetInt ("maxFish-3", settleCount);
+					}
+					PlayerPrefs.SetInt ("bestFish-3", PlayerPrefs.GetInt ("bestFish-3", 0) + settleCount);
+				}
+
 				settleTime = GetSettleTime (settleCount);
 				isSettle = true;
+				progressSlider.gameObject.SetActive (false);
 			}
 		}
 
@@ -243,8 +264,8 @@ public class SubmarineController : MonoBehaviour {
 
 	void ScoreGenerate(Transform fish){
 		Text text = Text.Instantiate (score, netParent.position, score.transform.rotation, scoreParent);
-		text.text = fishDic [fish.name].ToString();
-		goldSum += fishDic [fish.name];
+		text.text = (fishDic [fish.name]/2).ToString();
+		goldSum += (fishDic [fish.name]/2);
 		text.transform.position = Camera.main.WorldToScreenPoint (fish.position);
 		text.DOFade (1f, 0.3f);
 		text.transform.DOMoveY (text.transform.position.y+250f, 0.3f, false);

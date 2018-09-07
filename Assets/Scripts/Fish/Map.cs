@@ -82,8 +82,8 @@ public class Map : MonoBehaviour {
 				});
 			}
 		} else {
-			int cost = 300000;
-			MessageBox.Show ("", "It costs "+"$300000" +"to unlock" ,2);
+			int cost = 200000;
+			MessageBox.Show ("", "It costs "+"$200000" +"to unlock" ,2);
 			MessageBox.confim=()=>{
 				int gold = PlayerPrefs.GetInt ("gold", 0);
 				if(gold>cost){
@@ -129,8 +129,8 @@ public class Map : MonoBehaviour {
 				});
 			}
 		} else {
-			int cost = 80000000;
-			MessageBox.Show ("", "It costs "+"$80000000" +"to unlock" ,2);
+			int cost = 30000000;
+			MessageBox.Show ("", "It costs "+"$30000000" +"to unlock" ,2);
 			MessageBox.confim=()=>{
 				int gold = PlayerPrefs.GetInt ("gold", 0);
 				if(gold>cost){

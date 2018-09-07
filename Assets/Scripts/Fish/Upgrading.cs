@@ -42,11 +42,11 @@ public class Upgrading : MonoBehaviour {
 		}else if (PlayerPrefs.GetInt ("Level", 1) == 2) {
 			UIManager.Instance.diveDepth = PlayerPrefs.GetInt ("valueDepth2", -17);
 			value = PlayerPrefs.GetInt ("valueDepth2", UIManager.Instance.diveDepth);
-			price = PlayerPrefs.GetInt ("priceDepth2", 248000);
+			price = PlayerPrefs.GetInt ("priceDepth2", 124000);
 		}else if (PlayerPrefs.GetInt ("Level", 1) == 3) {
 			UIManager.Instance.diveDepth = PlayerPrefs.GetInt ("valueDepth3", -17);
 			value = PlayerPrefs.GetInt ("valueDepth3", UIManager.Instance.diveDepth);
-			price = PlayerPrefs.GetInt ("priceDepth3", 62800000);
+			price = PlayerPrefs.GetInt ("priceDepth3", 3140000);
 		}
 
 		valueT.text = (value) + "M";
