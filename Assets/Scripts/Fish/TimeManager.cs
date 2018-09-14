@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Common;
+using Together;
 
 public class TimeManager : MonoBehaviour {
 
@@ -59,12 +60,17 @@ public class TimeManager : MonoBehaviour {
 				PlayerPrefs.SetInt ("offlineOnClick", 1);
 				messageCount++;
 				MessageBox.confim = () => {
+					TGSDK.ReportAdRejected(TGSDKManager.doubleID);
 					int gold = PlayerPrefs.GetInt ("gold", 0) + min * PlayerPrefs.GetInt ("valueOffline", 4);
 					OnMessageBoxBtn(gold);
 				};
-				MessageBox.doubleR = () => {
+				MessageBox.doubleR = () => {					
+					TGSDK.ShowAdScene(TGSDKManager.doubleID);
 					int gold = PlayerPrefs.GetInt ("gold", 0) + min * PlayerPrefs.GetInt ("valueOffline", 4)*2;
 					OnMessageBoxBtn(gold);
+					if (TGSDK.CouldShowAd(TGSDKManager.doubleID)) {
+						TGSDK.ShowAd(TGSDKManager.doubleID);
+					}
 				};
 			}
 		}

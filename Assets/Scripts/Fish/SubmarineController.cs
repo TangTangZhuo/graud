@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 using Common;
+using Together;
 
 public class SubmarineController : MonoBehaviour {
 	public float moveSpeed;
@@ -25,6 +26,7 @@ public class SubmarineController : MonoBehaviour {
 	int goldSum;
 	int settleCount;
 	float settleTime;
+
 	Dictionary<string,int> fishDic = new Dictionary<string, int>();
 
 	private static SubmarineController instance;
@@ -82,7 +84,7 @@ public class SubmarineController : MonoBehaviour {
 			}
 			progressSlider.value = transform.position.y;
 		}
-		if (isSettle) {
+		if (isSettle) {			
 			time += Time.deltaTime;
 			if (time > settleTime) {
 				if (fishIndex < settleCount) {
@@ -103,6 +105,21 @@ public class SubmarineController : MonoBehaviour {
 							Destroy(fish.GetChild(0).gameObject);
 						}
 						isSettle = false;
+
+						if(PlayerPrefs.GetInt("double",0)>=2){
+							GameObject popBG = (GameObject)Resources.Load("PopBG");
+							int levelIndex = PlayerPrefs.GetInt ("Level", 1);
+							if (levelIndex == 1) {
+								popBG.transform.Find("double").GetComponentInChildren<Text>().text = "TRIPLE";
+							}
+							if (levelIndex == 2) {
+								popBG.transform.Find("double").GetComponentInChildren<Text>().text = "QUADRUPLE";
+							}
+							if (levelIndex == 3) {
+								popBG.transform.Find("double").GetComponentInChildren<Text>().text = "PENTA";
+							}
+						}
+
 						MessageBox.Show("SALE REWARD","$"+goldSum);
 						MessageBox.confim =()=>{
 							int gold = PlayerPrefs.GetInt ("gold", 0) + goldSum;
@@ -110,13 +127,29 @@ public class SubmarineController : MonoBehaviour {
 							Upgrading.Instance.CheckGold();
 							UpgradingOffline.Instance.CheckGold();
 							ProgressManager.Instance.GameWin ();
+							PlayerPrefs.SetInt ("double", PlayerPrefs.GetInt ("double", 0) + 1);
 						};
-						MessageBox.doubleR =()=>{
-							int gold = PlayerPrefs.GetInt ("gold", 0) + goldSum*2;
+						MessageBox.doubleR =()=>{															
+							GameObject popBG = (GameObject)Resources.Load("PopBG");
+							string doubleName = popBG.transform.Find("double").GetComponentInChildren<Text>().text;
+							int gold = 0;
+							if(doubleName == "TRIPLE"){
+								gold = PlayerPrefs.GetInt ("gold", 0) + goldSum*3;
+							}else if(doubleName == "QUADRUPLE"){
+								gold = PlayerPrefs.GetInt ("gold", 0) + goldSum*4;
+							}else if(doubleName == "PENTA"){
+								gold = PlayerPrefs.GetInt ("gold", 0) + goldSum*5;
+							}else if(doubleName == "DOUBLE"){
+								gold = PlayerPrefs.GetInt ("gold", 0) + goldSum*2;
+							}
 							PlayerPrefs.SetInt ("gold", gold);
 							Upgrading.Instance.CheckGold();
 							UpgradingOffline.Instance.CheckGold();
-							ProgressManager.Instance.GameWin ();
+							ProgressManager.Instance.GameWin ();														
+							PlayerPrefs.SetInt("double",0);
+							if (TGSDK.CouldShowAd(TGSDKManager.tripleID)) {
+								TGSDK.ShowAd(TGSDKManager.tripleID);
+							}	
 						};							
 							
 					});						
@@ -132,6 +165,7 @@ public class SubmarineController : MonoBehaviour {
 				fishIndex++;
 				time = 0;
 			}
+
 		}
 	}
 
