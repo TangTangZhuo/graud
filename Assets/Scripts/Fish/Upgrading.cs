@@ -58,6 +58,7 @@ public class Upgrading : MonoBehaviour {
 
 	public void OnDepthClick(){
 		if (gold > price) {
+			MultiHaptic.HapticMedium ();
 			gold -= price;
 			UIManager.Instance.diveDepth -= 7;
 			price = (int)(price*1.35f);

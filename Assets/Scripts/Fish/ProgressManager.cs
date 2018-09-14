@@ -66,6 +66,7 @@ public class ProgressManager : MonoBehaviour {
 	}
 
 	public void onStartButton(){
+		MultiHaptic.HapticMedium ();
 		isRunning = true;
 		isReady = false;
 		SubmarineController.Instance.gravityScale = 2;

@@ -99,16 +99,19 @@ public class SubmarineController : MonoBehaviour {
 					Transform fish = netParent.GetChild (fishIndex);
 					fish.DOScale (1, 0.3f).OnComplete(()=>{
 						fish.GetComponent<SpriteRenderer> ().DOFade (0f, 0.3f);
+						if(fish.childCount>0){
+							Destroy(fish.GetChild(0).gameObject);
+						}
 						isSettle = false;
 						MessageBox.Show("SALE REWARD","$"+goldSum);
-						MessageBox.confim=()=>{
+						MessageBox.confim =()=>{
 							int gold = PlayerPrefs.GetInt ("gold", 0) + goldSum;
 							PlayerPrefs.SetInt ("gold", gold);
 							Upgrading.Instance.CheckGold();
 							UpgradingOffline.Instance.CheckGold();
 							ProgressManager.Instance.GameWin ();
 						};
-						MessageBox.doubleR=()=>{
+						MessageBox.doubleR =()=>{
 							int gold = PlayerPrefs.GetInt ("gold", 0) + goldSum*2;
 							PlayerPrefs.SetInt ("gold", gold);
 							Upgrading.Instance.CheckGold();
@@ -124,7 +127,8 @@ public class SubmarineController : MonoBehaviour {
 					PlayerPrefs.SetInt (fish.name.Split (new char[]{'('}) [0], 1);
 					ScoreGenerate (fish);
 
-				}					
+				}	
+				MultiHaptic.HapticLight ();
 				fishIndex++;
 				time = 0;
 			}
@@ -259,6 +263,9 @@ public class SubmarineController : MonoBehaviour {
 	void Settlement(Transform fish,float time){
 		fish.DOScale (1, time).OnComplete(()=>{
 			fish.GetComponent<SpriteRenderer> ().DOFade (0f, time);
+			if(fish.childCount>0){
+				Destroy(fish.GetChild(0).gameObject);
+			}
 		});
 	}
 

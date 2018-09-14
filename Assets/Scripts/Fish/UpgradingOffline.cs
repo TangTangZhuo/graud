@@ -48,6 +48,7 @@ public class UpgradingOffline : MonoBehaviour {
 
 	public void OnOfflineClick(){
 		if (gold > price) {
+			MultiHaptic.HapticMedium ();
 			gold -= price;
 
 			if (UIManager.Instance.offlineGold < 40) {

@@ -63,6 +63,7 @@ namespace Common
 		{
 			if (confim!= null)
 			{
+				MultiHaptic.HapticMedium ();
 				confim();
 				GameObject.Destroy(Messagebox);
 				TitleStr = "标题";
@@ -72,6 +73,7 @@ namespace Common
 		}     
 		public static void Double()
 		{
+			MultiHaptic.HapticMedium ();
 			if (Messagebox.tag == "PopBG") {
 				if (doubleR != null) {
 					doubleR ();
@@ -81,6 +83,7 @@ namespace Common
 			if (Messagebox.tag == "PurchasePop") {	
 				if (cancle != null) {
 					cancle ();
+
 				}
 				GameObject.Destroy (Messagebox);
 				

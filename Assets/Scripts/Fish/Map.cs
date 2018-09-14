@@ -37,11 +37,13 @@ public class Map : MonoBehaviour {
 
 	public void OnMapBtn(){
 		gameObject.SetActive (true);
+		MultiHaptic.HapticMedium ();
 	}
 
 	public void OnLevel1Btn(){
 		int level = PlayerPrefs.GetInt ("Level", 1);
 		if (level != 1) {
+			MultiHaptic.HapticMedium ();
 			int v3Count = int.Parse((levelPos [level - 1].name.ToString ()));
 			Vector3[] pathV3 = new Vector3[v3Count];
 			for (int i = 0; i < v3Count; i++) {
@@ -58,6 +60,7 @@ public class Map : MonoBehaviour {
 		if (PlayerPrefs.GetInt ("Lock2", 0) == 1) {
 			int level = PlayerPrefs.GetInt ("Level", 1);
 			if (level != 2) {
+				MultiHaptic.HapticMedium ();
 				int index = int.Parse ((levelPos [level - 1].name.ToString ()));
 				int curIndex = int.Parse ((levelPos [1].name.ToString ()));
 				int v3Count;
@@ -84,7 +87,7 @@ public class Map : MonoBehaviour {
 		} else {
 			int cost = 200000;
 			MessageBox.Show ("", "It costs "+"$200000" +"to unlock" ,2);
-			MessageBox.confim=()=>{
+			MessageBox.confim =()=>{
 				int gold = PlayerPrefs.GetInt ("gold", 0);
 				if(gold>cost){
 					gold -=cost;
@@ -99,12 +102,13 @@ public class Map : MonoBehaviour {
 				}					
 			};
 		}
-	}
+	}		
 
 	public void OnLevel3Btn(){
 		if (PlayerPrefs.GetInt ("Lock3", 0) == 1) {
 			int level = PlayerPrefs.GetInt ("Level", 1);
 			if (level != 3) {
+				MultiHaptic.HapticMedium ();
 				int index = int.Parse ((levelPos [level - 1].name.ToString ()));
 				int curIndex = int.Parse ((levelPos [2].name.ToString ()));
 				int v3Count;
@@ -131,7 +135,7 @@ public class Map : MonoBehaviour {
 		} else {
 			int cost = 30000000;
 			MessageBox.Show ("", "It costs "+"$30000000" +"to unlock" ,2);
-			MessageBox.confim=()=>{
+			MessageBox.confim =()=>{
 				int gold = PlayerPrefs.GetInt ("gold", 0);
 				if(gold>cost){
 					gold -=cost;
@@ -149,6 +153,7 @@ public class Map : MonoBehaviour {
 	}
 
 	public void OnLevel4Btn(){
+		MultiHaptic.HapticMedium ();
 		GenerateText (lv4, "当前关卡还未开放！");
 	}
 

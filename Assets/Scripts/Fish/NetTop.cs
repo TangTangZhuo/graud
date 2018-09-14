@@ -26,6 +26,7 @@ public class NetTop : MonoBehaviour {
 		if (collider.tag == "Fish"||collider.tag == "unusual") {	
 			if (!ProgressManager.Instance.isOvering && !ProgressManager.Instance.isReady) {
 				if (collider.tag == "unusual") {
+					MultiHaptic.HapticHeavy ();
 					Destroy( collider.GetComponent<GhostSprites> ());
 				}
 				if (ProgressManager.Instance.isRunning) {

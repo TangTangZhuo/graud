@@ -12,7 +12,7 @@ public class Illustration : MonoBehaviour {
 
 	int screenHeight;
 	bool isShow;
-	int fishNumber;
+	//int fishNumber;
 
 	public Sprite[] fishImage;
 	public string[] fishName;
@@ -32,7 +32,7 @@ public class Illustration : MonoBehaviour {
 	void Start () {
 		isShow = false;
 		screenHeight = Screen.height;
-		fishNumber = fishImage.Length;
+		//fishNumber = fishImage.Length;
 		IllUpdate ();
 		if (PlayerPrefs.GetInt ("illNew", 0)==1) {
 			illNew.SetActive (true);
@@ -46,7 +46,10 @@ public class Illustration : MonoBehaviour {
 
 
 	public void IllUpdate(){
-		for (int i =0; i < fishNumber; i++) {
+		for (int i = 0; i < scrollContent.childCount; i++) {
+			Destroy (scrollContent.GetChild (i).gameObject);
+		}
+		for (int i =0; i < fishImage.Length; i++) {
 			
 			Transform item = Transform.Instantiate (fishItem, scrollContent);
 			if (PlayerPrefs.GetInt ("fish" + (i + 1), 0) == 1) {
@@ -67,6 +70,7 @@ public class Illustration : MonoBehaviour {
 
 	public void OnIllBtnClick(){
 		if (!isShow) {
+			MultiHaptic.HapticMedium ();
 			illustration.DOMoveY (illustration.position.y - screenHeight, 0.5f, false);
 			isShow = true;
 			illNew.SetActive (false);
@@ -76,6 +80,7 @@ public class Illustration : MonoBehaviour {
 
 	public void OnBackBtnClick(){
 		if (isShow) {
+			MultiHaptic.HapticMedium ();
 			illustration.DOMoveY (illustration.position.y + screenHeight, 0.5f, false);
 			isShow = false;
 		}
