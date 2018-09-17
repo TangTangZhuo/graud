@@ -59,14 +59,19 @@ public class TimeManager : MonoBehaviour {
 				MessageBox.Show ("OFFLINE REWARD", "$" + min * PlayerPrefs.GetInt ("valueOffline", 4));
 				PlayerPrefs.SetInt ("offlineOnClick", 1);
 				messageCount++;
+
+				int goldMutiple = 1;
+				if (PlayerPrefs.GetInt ("golden_net", 0) == 1) {
+					goldMutiple = 2;
+				}
 				MessageBox.confim = () => {
 					TGSDK.ReportAdRejected(TGSDKManager.doubleID);
-					int gold = PlayerPrefs.GetInt ("gold", 0) + min * PlayerPrefs.GetInt ("valueOffline", 4);
+					int gold = PlayerPrefs.GetInt ("gold", 0) + min * PlayerPrefs.GetInt ("valueOffline", 4)*goldMutiple;
 					OnMessageBoxBtn(gold);
 				};
 				MessageBox.doubleR = () => {					
 					TGSDK.ShowAdScene(TGSDKManager.doubleID);
-					int gold = PlayerPrefs.GetInt ("gold", 0) + min * PlayerPrefs.GetInt ("valueOffline", 4)*2;
+					int gold = PlayerPrefs.GetInt ("gold", 0) + min * PlayerPrefs.GetInt ("valueOffline", 4)*2*goldMutiple;
 					OnMessageBoxBtn(gold);
 					if (TGSDK.CouldShowAd(TGSDKManager.doubleID)) {
 						TGSDK.ShowAd(TGSDKManager.doubleID);

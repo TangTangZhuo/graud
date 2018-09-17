@@ -11,6 +11,9 @@ namespace UnityEngine.Purchasing
     [HelpURL("https://docs.unity3d.com/Manual/UnityIAP.html")]
     public class IAPButton : MonoBehaviour
     {
+		bool purchasing = false;
+
+		public GameObject waiting;
         public enum ButtonType
         {
             Purchase,
@@ -102,12 +105,14 @@ namespace UnityEngine.Purchasing
 
         void PurchaseProduct()
         {
-            if (buttonType == ButtonType.Purchase)
-            {
-                Debug.Log("IAPButton.PurchaseProduct() with product ID: " + productId);
+			if (!purchasing) {
+				purchasing = true;
+				if (buttonType == ButtonType.Purchase) {
+					Debug.Log ("IAPButton.PurchaseProduct() with product ID: " + productId);
 
-                CodelessIAPStoreListener.Instance.InitiatePurchase(productId);
-            }
+					CodelessIAPStoreListener.Instance.InitiatePurchase (productId);
+				}
+			}
         }
 
         void Restore()
@@ -124,7 +129,7 @@ namespace UnityEngine.Purchasing
                 else if (Application.platform == RuntimePlatform.IPhonePlayer ||
                          Application.platform == RuntimePlatform.OSXPlayer ||
                          Application.platform == RuntimePlatform.tvOS)
-                {
+				{
                     CodelessIAPStoreListener.Instance.ExtensionProvider.GetExtension<IAppleExtensions>()
                         .RestoreTransactions(OnTransactionsRestored);
                 }
@@ -153,6 +158,17 @@ namespace UnityEngine.Purchasing
             }
         }
 
+		void IRestore(PurchaseEventArgs e){
+			if (string.Equals (e.purchasedProduct.definition.id, "fishingpass", System.StringComparison.Ordinal)) {
+				PlayerPrefs.SetInt ("fishingpass", 1);
+			}
+			if (string.Equals (e.purchasedProduct.definition.id, "golden_net", System.StringComparison.Ordinal)) {
+				PlayerPrefs.SetInt ("golden_net", 1);
+			}
+			waiting.SetActive (false);
+			SceneManagement.SceneManager.LoadScene (SceneManagement.SceneManager.GetActiveScene().name);
+		}
+
         void OnTransactionsRestored(bool success)
         {
             Debug.Log("Transactions restored: " + success);
@@ -168,6 +184,8 @@ namespace UnityEngine.Purchasing
 
             onPurchaseComplete.Invoke(e.purchasedProduct);
 
+			IRestore (e);
+
             return (consumePurchase) ? PurchaseProcessingResult.Complete : PurchaseProcessingResult.Pending;
         }
 
@@ -180,6 +198,8 @@ namespace UnityEngine.Purchasing
                 reason));
 
             onPurchaseFailed.Invoke(product, reason);
+
+			purchasing = false;
         }
 
         internal void UpdateText()

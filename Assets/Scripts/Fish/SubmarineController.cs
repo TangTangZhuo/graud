@@ -26,6 +26,8 @@ public class SubmarineController : MonoBehaviour {
 	int goldSum;
 	int settleCount;
 	float settleTime;
+	[HideInInspector]
+	int goldMultiple = 1;
 
 	Dictionary<string,int> fishDic = new Dictionary<string, int>();
 
@@ -54,6 +56,7 @@ public class SubmarineController : MonoBehaviour {
 		InitFishDic ();
 		goldSum = 0;
 		InitProgressSlider ();
+		UpdateGoldMutiple ();
 	}
 	
 	// Update is called once per frame
@@ -122,7 +125,7 @@ public class SubmarineController : MonoBehaviour {
 
 						MessageBox.Show("SALE REWARD","$"+goldSum);
 						MessageBox.confim =()=>{
-							int gold = PlayerPrefs.GetInt ("gold", 0) + goldSum;
+							int gold = PlayerPrefs.GetInt ("gold", 0) + goldSum*goldMultiple;
 							PlayerPrefs.SetInt ("gold", gold);
 							Upgrading.Instance.CheckGold();
 							UpgradingOffline.Instance.CheckGold();
@@ -133,6 +136,7 @@ public class SubmarineController : MonoBehaviour {
 							GameObject popBG = (GameObject)Resources.Load("PopBG");
 							string doubleName = popBG.transform.Find("double").GetComponentInChildren<Text>().text;
 							int gold = 0;
+							goldSum*=goldMultiple;
 							if(doubleName == "TRIPLE"){
 								gold = PlayerPrefs.GetInt ("gold", 0) + goldSum*3;
 							}else if(doubleName == "QUADRUPLE"){
@@ -142,6 +146,7 @@ public class SubmarineController : MonoBehaviour {
 							}else if(doubleName == "DOUBLE"){
 								gold = PlayerPrefs.GetInt ("gold", 0) + goldSum*2;
 							}
+
 							PlayerPrefs.SetInt ("gold", gold);
 							Upgrading.Instance.CheckGold();
 							UpgradingOffline.Instance.CheckGold();
@@ -159,6 +164,7 @@ public class SubmarineController : MonoBehaviour {
 					}
 					PlayerPrefs.SetInt (fish.name.Split (new char[]{'('}) [0], 1);
 					ScoreGenerate (fish);
+					PlayerPrefs.SetInt ("accumulation", PlayerPrefs.GetInt ("accumulation", 0)+goldSum);
 
 				}	
 				MultiHaptic.HapticLight ();
@@ -361,5 +367,24 @@ public class SubmarineController : MonoBehaviour {
 		
 	public void SynDepth(){
 		progressSlider.transform.Find ("depth").GetComponent<Text> ().text = UIManager.Instance.diveDepth+"M";
+	}
+
+	public void UpdateGoldMutiple(){
+		GameObject popBG = (GameObject)Resources.Load ("PopBG");
+		GameObject doubleImage = popBG.transform.Find ("GoldDouble").gameObject;
+		SkinnedMeshRenderer skin1 = netParent.parent.Find ("FishNet").GetComponent<SkinnedMeshRenderer> ();
+		SkinnedMeshRenderer skin2 = netParent.parent.Find ("FishNetReady").GetComponent<SkinnedMeshRenderer> ();
+		Material goldNet = IPAManager.Instance.goldNet;
+		if (PlayerPrefs.GetInt ("golden_net", 0) == 1) {
+			goldMultiple = 2;
+			doubleImage.SetActive (true);
+			skin1.material = goldNet;
+			skin2.material = goldNet;
+			//skin1.transform.GetChild (0).gameObject.SetActive (true);
+			//skin2.transform.GetChild (0).gameObject.SetActive (true);			
+		}if (PlayerPrefs.GetInt ("golden_net", 0) == 0) {
+			goldMultiple = 1;
+			doubleImage.SetActive (false);
+		}
 	}
 }
