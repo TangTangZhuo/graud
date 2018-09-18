@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using UnityEngine.UI;
-
+using DG.Tweening;
 
 public class IPAManager : MonoBehaviour
 {
@@ -11,6 +11,8 @@ public class IPAManager : MonoBehaviour
 	public GameObject waiting;
 	public Material goldNet;
 	public Text accumulation;
+	public GameObject goldImage;
+	Transform targetGoldPos;
 
 	bool onClicking = false;
 	private static IPAManager instance;
@@ -25,8 +27,9 @@ public class IPAManager : MonoBehaviour
 	}
 
 	void Start(){
-		accumulation.text = PlayerPrefs.GetInt ("accumulation", 0).ToString();
+		accumulation.text = UIManager.UnitChange(PlayerPrefs.GetInt ("accumulation", 0));
 		UpdateIAPState ();
+		targetGoldPos = transform.parent.Find ("gold").Find ("Image");
 	}
 
 	public void OnPurchaseFinish (Product product)
@@ -61,7 +64,7 @@ public class IPAManager : MonoBehaviour
 			passBtn.onClick.AddListener (OnCollectClick);
 		}
 		if (PlayerPrefs.GetInt ("fishingpass", 0) == 0) {
-			transform.Find ("fishingPass").GetComponent<Button> ().onClick.AddListener (OnFishVipClick);
+			transform.Find ("fishingPass").GetComponent<Button> ().onClick.AddListener (OnVipBtn);
 		}
 		if (PlayerPrefs.GetInt ("golden_net", 0) == 1) {
 			transform.Find ("goldNet").gameObject.SetActive (false);
@@ -70,16 +73,31 @@ public class IPAManager : MonoBehaviour
 
 	void OnCollectClick(){
 		int gold = 0;
+		//UIManager.Instance.goldT.text = PlayerPrefs.GetInt ("gold", 0).ToString ();
 		gold = PlayerPrefs.GetInt ("gold", 0) + PlayerPrefs.GetInt ("accumulation", 0);
 		PlayerPrefs.SetInt ("gold", gold);
-		UIManager.Instance.goldT.text = gold.ToString ();
+		UIManager.Instance.goldT.DOText (UIManager.UnitChange (gold), 0.5f, false, ScrambleMode.None, null);
+		if (PlayerPrefs.GetInt ("accumulation", 0) != 0) {
+			for (int i = 0; i < 10; i++) {
+				FlyGold (Random.Range (0.1f, 0.8f));
+			}
+		}
 		Upgrading.Instance.CheckGold();
 		UpgradingOffline.Instance.CheckGold();
 		PlayerPrefs.SetInt ("accumulation", 0);
 		accumulation.text = "0";
+
 	}
 
-
+	void FlyGold(float time){
+		Image gImage = Instantiate (goldImage, transform).GetComponent<Image>();
+		Transform gTrans = gImage.transform;
+		gImage.DOFade (0, time);
+		gTrans.DOScale (0, time);
+		gTrans.DOMove (targetGoldPos.position, time, false).OnComplete(()=>{
+			Destroy(gTrans.gameObject);
+		});
+	}
 
 	public void OnFishVipClick ()
 	{
@@ -94,7 +112,21 @@ public class IPAManager : MonoBehaviour
 
 	}
 		
+	public void OnGoldenNetBtn(){
+		transform.Find ("GoldenPurchase").gameObject.SetActive (true);
+	}
 
+	public void OnVipBtn(){
+		transform.Find ("VIPPurchase").gameObject.SetActive (true);
+	}
+		
+	public void OnGoldenBackBtn(){
+		transform.Find ("GoldenPurchase").gameObject.SetActive (false);
+	}
+
+	public void OnVipBackBtn(){
+		transform.Find ("VIPPurchase").gameObject.SetActive (false);
+	}
 
 	//	public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs e){
 	//		if (string.Equals (e.purchasedProduct.definition.id, "fishingpass", StringComparison.Ordinal)) {

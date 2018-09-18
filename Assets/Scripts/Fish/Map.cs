@@ -85,14 +85,14 @@ public class Map : MonoBehaviour {
 				});
 			}
 		} else {
-			int cost = 200000;
-			MessageBox.Show ("", "It costs "+"$200000" +"to unlock" ,2);
+			int cost = 2000000;
+			MessageBox.Show ("", "It costs "+"$2,000K" +"to unlock" ,2);
 			MessageBox.confim =()=>{
 				int gold = PlayerPrefs.GetInt ("gold", 0);
 				if(gold>cost){
 					gold -=cost;
 					PlayerPrefs.SetInt ("gold", gold);
-					UIManager.Instance.goldT.text = gold.ToString ();
+					UIManager.Instance.goldT.DOText (UIManager.UnitChange (gold), 0.5f, false, ScrambleMode.None, null);
 					Upgrading.Instance.CheckGold ();
 					UpgradingOffline.Instance.CheckGold ();
 					PlayerPrefs.SetInt ("Lock2",1);
@@ -133,14 +133,14 @@ public class Map : MonoBehaviour {
 				});
 			}
 		} else {
-			int cost = 30000000;
-			MessageBox.Show ("", "It costs "+"$30000000" +"to unlock" ,2);
+			int cost = 300000000;
+			MessageBox.Show ("", "It costs "+"$300,000K" +"to unlock" ,2);
 			MessageBox.confim =()=>{
 				int gold = PlayerPrefs.GetInt ("gold", 0);
 				if(gold>cost){
 					gold -=cost;
 					PlayerPrefs.SetInt ("gold", gold);
-					UIManager.Instance.goldT.text = gold.ToString ();
+					UIManager.Instance.goldT.DOText (UIManager.UnitChange (gold), 0.5f, false, ScrambleMode.None, null);
 					Upgrading.Instance.CheckGold ();
 					UpgradingOffline.Instance.CheckGold ();
 					PlayerPrefs.SetInt ("Lock3",1);

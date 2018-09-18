@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class UpgradingOffline : MonoBehaviour {
 	private Text valueT;
@@ -35,15 +36,15 @@ public class UpgradingOffline : MonoBehaviour {
 
 	void UpdateData(){
 		
-		UIManager.Instance.offlineGold = PlayerPrefs.GetInt ("valueOffline", 4);
+		UIManager.Instance.offlineGold = PlayerPrefs.GetInt ("valueOffline", 40);
 
 		value = PlayerPrefs.GetInt ("valueOffline", UIManager.Instance.offlineGold);
-		price = PlayerPrefs.GetInt ("priceOffline", 281);
-		valueT.text = "+$" + value + "/Min";
-		priceT.text = "$" + price;
+		price = PlayerPrefs.GetInt ("priceOffline", 2810);
+		valueT.text = "+$" + UIManager.UnitChange(value) + "/Min";
+		priceT.text = "$" + UIManager.UnitChange(price);
 
 		gold = PlayerPrefs.GetInt ("gold", 0);
-		UIManager.Instance.goldT.text = gold.ToString ();
+		UIManager.Instance.goldT.DOText (UIManager.UnitChange (gold), 0.5f, false, ScrambleMode.None, null);
 	}
 
 	public void OnOfflineClick(){
@@ -51,8 +52,8 @@ public class UpgradingOffline : MonoBehaviour {
 			MultiHaptic.HapticMedium ();
 			gold -= price;
 
-			if (UIManager.Instance.offlineGold < 40) {
-				UIManager.Instance.offlineGold += 4;
+			if (UIManager.Instance.offlineGold < 400) {
+				UIManager.Instance.offlineGold += 40;
 			} else {
 				UIManager.Instance.offlineGold = (int)(UIManager.Instance.offlineGold*1.25f);
 			}

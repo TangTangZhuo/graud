@@ -12,6 +12,7 @@ namespace UnityEngine.Purchasing
     public class IAPButton : MonoBehaviour
     {
 		bool purchasing = false;
+		bool restoring = false;
 
 		public GameObject waiting;
         public enum ButtonType
@@ -117,45 +118,37 @@ namespace UnityEngine.Purchasing
 
         void Restore()
         {
-            if (buttonType == ButtonType.Restore)
-            {
-                if (Application.platform == RuntimePlatform.WSAPlayerX86 ||
-                    Application.platform == RuntimePlatform.WSAPlayerX64 ||
-                    Application.platform == RuntimePlatform.WSAPlayerARM)
-                {
-                    CodelessIAPStoreListener.Instance.ExtensionProvider.GetExtension<IMicrosoftExtensions>()
-                        .RestoreTransactions();
-                }
-                else if (Application.platform == RuntimePlatform.IPhonePlayer ||
-                         Application.platform == RuntimePlatform.OSXPlayer ||
-                         Application.platform == RuntimePlatform.tvOS)
-				{
-                    CodelessIAPStoreListener.Instance.ExtensionProvider.GetExtension<IAppleExtensions>()
-                        .RestoreTransactions(OnTransactionsRestored);
-                }
-                else if (Application.platform == RuntimePlatform.Android &&
-                         StandardPurchasingModule.Instance().appStore == AppStore.SamsungApps)
-                {
-                    CodelessIAPStoreListener.Instance.ExtensionProvider.GetExtension<ISamsungAppsExtensions>()
-                        .RestoreTransactions(OnTransactionsRestored);
-                }
-                else if (Application.platform == RuntimePlatform.Android &&
-                         StandardPurchasingModule.Instance().appStore == AppStore.CloudMoolah)
-                {
-                    CodelessIAPStoreListener.Instance.ExtensionProvider.GetExtension<IMoolahExtension>()
-                        .RestoreTransactionID((restoreTransactionIDState) =>
-                        {
-                            OnTransactionsRestored(
-                                restoreTransactionIDState != RestoreTransactionIDState.RestoreFailed &&
-                                restoreTransactionIDState != RestoreTransactionIDState.NotKnown);
-                        });
-                }
-                else
-                {
-                    Debug.LogWarning(Application.platform.ToString() +
-                                     " is not a supported platform for the Codeless IAP restore button");
-                }
-            }
+			if (!restoring) {
+				restoring = true;
+				if (buttonType == ButtonType.Restore) {
+					if (Application.platform == RuntimePlatform.WSAPlayerX86 ||
+					               Application.platform == RuntimePlatform.WSAPlayerX64 ||
+					               Application.platform == RuntimePlatform.WSAPlayerARM) {
+						CodelessIAPStoreListener.Instance.ExtensionProvider.GetExtension<IMicrosoftExtensions> ()
+                        .RestoreTransactions ();
+					} else if (Application.platform == RuntimePlatform.IPhonePlayer ||
+					                    Application.platform == RuntimePlatform.OSXPlayer ||
+					                    Application.platform == RuntimePlatform.tvOS) {
+						CodelessIAPStoreListener.Instance.ExtensionProvider.GetExtension<IAppleExtensions> ()
+                        .RestoreTransactions (OnTransactionsRestored);
+					} else if (Application.platform == RuntimePlatform.Android &&
+					                    StandardPurchasingModule.Instance ().appStore == AppStore.SamsungApps) {
+						CodelessIAPStoreListener.Instance.ExtensionProvider.GetExtension<ISamsungAppsExtensions> ()
+                        .RestoreTransactions (OnTransactionsRestored);
+					} else if (Application.platform == RuntimePlatform.Android &&
+					                    StandardPurchasingModule.Instance ().appStore == AppStore.CloudMoolah) {
+						CodelessIAPStoreListener.Instance.ExtensionProvider.GetExtension<IMoolahExtension> ()
+                        .RestoreTransactionID ((restoreTransactionIDState) => {
+							OnTransactionsRestored (
+								restoreTransactionIDState != RestoreTransactionIDState.RestoreFailed &&
+								restoreTransactionIDState != RestoreTransactionIDState.NotKnown);
+						});
+					} else {
+						Debug.LogWarning (Application.platform.ToString () +
+						" is not a supported platform for the Codeless IAP restore button");
+					}
+				}
+			}
         }
 
 		void IRestore(PurchaseEventArgs e){
@@ -172,6 +165,9 @@ namespace UnityEngine.Purchasing
         void OnTransactionsRestored(bool success)
         {
             Debug.Log("Transactions restored: " + success);
+			if (!success) {
+				restoring = false;
+			}
         }
 
         /**

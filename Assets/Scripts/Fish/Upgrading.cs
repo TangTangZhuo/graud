@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class Upgrading : MonoBehaviour {
 	private Text valueT;
@@ -38,22 +39,23 @@ public class Upgrading : MonoBehaviour {
 		if (PlayerPrefs.GetInt ("Level", 1) == 1) {
 			UIManager.Instance.diveDepth = PlayerPrefs.GetInt ("valueDepth", -17);
 			value = PlayerPrefs.GetInt ("valueDepth", UIManager.Instance.diveDepth);
-			price = PlayerPrefs.GetInt ("priceDepth", 281);
+			price = PlayerPrefs.GetInt ("priceDepth", 2810);
 		}else if (PlayerPrefs.GetInt ("Level", 1) == 2) {
 			UIManager.Instance.diveDepth = PlayerPrefs.GetInt ("valueDepth2", -17);
 			value = PlayerPrefs.GetInt ("valueDepth2", UIManager.Instance.diveDepth);
-			price = PlayerPrefs.GetInt ("priceDepth2", 124000);
+			price = PlayerPrefs.GetInt ("priceDepth2", 1240000);
 		}else if (PlayerPrefs.GetInt ("Level", 1) == 3) {
 			UIManager.Instance.diveDepth = PlayerPrefs.GetInt ("valueDepth3", -17);
 			value = PlayerPrefs.GetInt ("valueDepth3", UIManager.Instance.diveDepth);
-			price = PlayerPrefs.GetInt ("priceDepth3", 3140000);
+			price = PlayerPrefs.GetInt ("priceDepth3", 31400000);
 		}
 
-		valueT.text = (value) + "M";
-		priceT.text = "$" + price;
+		valueT.text = (UIManager.UnitChange(value)) + "M";
+		priceT.text = "$" + UIManager.UnitChange(price);
 		
 		gold = PlayerPrefs.GetInt ("gold", 0);
-		UIManager.Instance.goldT.text = gold.ToString ();
+
+		UIManager.Instance.goldT.DOText (UIManager.UnitChange (gold), 0.5f, false, ScrambleMode.None, null);
 	}
 
 	public void OnDepthClick(){

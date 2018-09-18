@@ -60,7 +60,7 @@ public class SubmarineController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		if (playerRig.gravityScale != gravityScale) {
 			playerRig.gravityScale = gravityScale;
 		}
@@ -87,7 +87,12 @@ public class SubmarineController : MonoBehaviour {
 			}
 			progressSlider.value = transform.position.y;
 		}
-		if (isSettle) {			
+		if (isSettle) {		
+			if (PlayerPrefs.GetInt ("golden_net", 0) == 1) {
+				HidePopUI (false);
+			} else {
+				HidePopUI (true);
+			}
 			time += Time.deltaTime;
 			if (time > settleTime) {
 				if (fishIndex < settleCount) {
@@ -110,6 +115,7 @@ public class SubmarineController : MonoBehaviour {
 						isSettle = false;
 
 						if(PlayerPrefs.GetInt("double",0)>=2){
+							
 							GameObject popBG = (GameObject)Resources.Load("PopBG");
 							int levelIndex = PlayerPrefs.GetInt ("Level", 1);
 							if (levelIndex == 1) {
@@ -122,8 +128,8 @@ public class SubmarineController : MonoBehaviour {
 								popBG.transform.Find("double").GetComponentInChildren<Text>().text = "PENTA";
 							}
 						}
-
-						MessageBox.Show("SALE REWARD","$"+goldSum);
+						//UpdateGoldMutiple ();
+						MessageBox.Show("SALE REWARD","$"+ UIManager.UnitChange(goldSum));
 						MessageBox.confim =()=>{
 							int gold = PlayerPrefs.GetInt ("gold", 0) + goldSum*goldMultiple;
 							PlayerPrefs.SetInt ("gold", gold);
@@ -164,7 +170,7 @@ public class SubmarineController : MonoBehaviour {
 					}
 					PlayerPrefs.SetInt (fish.name.Split (new char[]{'('}) [0], 1);
 					ScoreGenerate (fish);
-					PlayerPrefs.SetInt ("accumulation", PlayerPrefs.GetInt ("accumulation", 0)+goldSum);
+					PlayerPrefs.SetInt ("accumulation", PlayerPrefs.GetInt ("accumulation", 0)+(int)(goldSum*0.6f));
 
 				}	
 				MultiHaptic.HapticLight ();
@@ -320,36 +326,36 @@ public class SubmarineController : MonoBehaviour {
 	}
 
 	void InitFishDic(){
-		fishDic.Add ("fish1(Clone)", 50);
-		fishDic.Add ("fish2(Clone)", 75);
-		fishDic.Add ("fish3(Clone)", 125);
-		fishDic.Add ("fish4(Clone)", 200);
-		fishDic.Add ("fish5(Clone)", 300);
-		fishDic.Add ("fish6(Clone)", 450);
-		fishDic.Add ("fish7(Clone)", 700);
-		fishDic.Add ("fish8(Clone)", 1000);
-		fishDic.Add ("fish9(Clone)", 1600);
-		fishDic.Add ("fish10(Clone)", 2500);
-		fishDic.Add ("fish11(Clone)", 1000);
-		fishDic.Add ("fish12(Clone)", 2000);
-		fishDic.Add ("fish13(Clone)", 3000);
-		fishDic.Add ("fish14(Clone)", 4000);
-		fishDic.Add ("fish15(Clone)", 6000);
-		fishDic.Add ("fish16(Clone)", 9000);
-		fishDic.Add ("fish17(Clone)", 13500);
-		fishDic.Add ("fish18(Clone)", 20250);
-		fishDic.Add ("fish19(Clone)", 30375);
-		fishDic.Add ("fish20(Clone)", 45560);
-		fishDic.Add ("fish21(Clone)", 20340);
-		fishDic.Add ("fish22(Clone)", 30510);
-		fishDic.Add ("fish23(Clone)", 45765);
-		fishDic.Add ("fish24(Clone)", 65100);
-		fishDic.Add ("fish25(Clone)", 93200);
-		fishDic.Add ("fish26(Clone)", 125820);
-		fishDic.Add ("fish27(Clone)", 169850);
-		fishDic.Add ("fish28(Clone)", 229306);
-		fishDic.Add ("fish29(Clone)", 309564);
-		fishDic.Add ("fish30(Clone)", 417911);
+		fishDic.Add ("fish1(Clone)", 500);
+		fishDic.Add ("fish2(Clone)", 750);
+		fishDic.Add ("fish3(Clone)", 1250);
+		fishDic.Add ("fish4(Clone)", 2000);
+		fishDic.Add ("fish5(Clone)", 3000);
+		fishDic.Add ("fish6(Clone)", 4500);
+		fishDic.Add ("fish7(Clone)", 7000);
+		fishDic.Add ("fish8(Clone)", 10000);
+		fishDic.Add ("fish9(Clone)", 16000);
+		fishDic.Add ("fish10(Clone)", 25000);
+		fishDic.Add ("fish11(Clone)", 10000);
+		fishDic.Add ("fish12(Clone)", 20000);
+		fishDic.Add ("fish13(Clone)", 30000);
+		fishDic.Add ("fish14(Clone)", 40000);
+		fishDic.Add ("fish15(Clone)", 60000);
+		fishDic.Add ("fish16(Clone)", 90000);
+		fishDic.Add ("fish17(Clone)", 135000);
+		fishDic.Add ("fish18(Clone)", 202500);
+		fishDic.Add ("fish19(Clone)", 303750);
+		fishDic.Add ("fish20(Clone)", 455600);
+		fishDic.Add ("fish21(Clone)", 203400);
+		fishDic.Add ("fish22(Clone)", 305100);
+		fishDic.Add ("fish23(Clone)", 457650);
+		fishDic.Add ("fish24(Clone)", 651000);
+		fishDic.Add ("fish25(Clone)", 932000);
+		fishDic.Add ("fish26(Clone)", 1258200);
+		fishDic.Add ("fish27(Clone)", 1698500);
+		fishDic.Add ("fish28(Clone)", 2293060);
+		fishDic.Add ("fish29(Clone)", 3095640);
+		fishDic.Add ("fish30(Clone)", 4179110);
 
 		AddUnusual (30);
 	}
@@ -372,19 +378,31 @@ public class SubmarineController : MonoBehaviour {
 	public void UpdateGoldMutiple(){
 		GameObject popBG = (GameObject)Resources.Load ("PopBG");
 		GameObject doubleImage = popBG.transform.Find ("GoldDouble").gameObject;
+		GameObject passVip = popBG.transform.Find ("PassVip").gameObject;
 		SkinnedMeshRenderer skin1 = netParent.parent.Find ("FishNet").GetComponent<SkinnedMeshRenderer> ();
 		SkinnedMeshRenderer skin2 = netParent.parent.Find ("FishNetReady").GetComponent<SkinnedMeshRenderer> ();
 		Material goldNet = IPAManager.Instance.goldNet;
+				
 		if (PlayerPrefs.GetInt ("golden_net", 0) == 1) {
 			goldMultiple = 2;
-			doubleImage.SetActive (true);
 			skin1.material = goldNet;
 			skin2.material = goldNet;
-			//skin1.transform.GetChild (0).gameObject.SetActive (true);
-			//skin2.transform.GetChild (0).gameObject.SetActive (true);			
-		}if (PlayerPrefs.GetInt ("golden_net", 0) == 0) {
-			goldMultiple = 1;
-			doubleImage.SetActive (false);
+				//skin1.transform.GetChild (0).gameObject.SetActive (true);
+				//skin2.transform.GetChild (0).gameObject.SetActive (true);			
 		}
+		if (PlayerPrefs.GetInt ("golden_net", 0) == 0) {
+			goldMultiple = 1;
+		}
+
+	}
+
+	void HidePopUI(bool bo){
+		GameObject popBG = (GameObject)Resources.Load ("PopBG");
+		GameObject doubleImage = popBG.transform.Find ("GoldDouble").gameObject;
+		GameObject passVip = popBG.transform.Find ("PassVip").gameObject;
+		GameObject extra = popBG.transform.Find ("extra").gameObject;
+		doubleImage.SetActive (!bo);
+		passVip.SetActive (false);
+		extra.SetActive (false);
 	}
 }

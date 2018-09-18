@@ -4,6 +4,8 @@ using UnityEngine;
 using System;
 using Common;
 using Together;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class TimeManager : MonoBehaviour {
 
@@ -13,24 +15,36 @@ public class TimeManager : MonoBehaviour {
 	int messageCount;
 	void Awake(){
 		messageCount = 0;
+		int gold = PlayerPrefs.GetInt ("gold", 0)/2;
+		if(gold>=1000000){
+			if (gold / 1000 > 1000) {
+				UIManager.Instance.goldT.text = (gold / 1000).ToString ().Insert ((gold / 1000000).ToString ().Length, ",") + "K";
+			} else {
+				UIManager.Instance.goldT.text = gold/1000+"K";
+			}
+		}
+
 	}
 
 	void Start()
 	{		
-		if (PlayerPrefs.GetInt ("offlineOnClick", 0) == 1) {
+		if (PlayerPrefs.GetInt ("quitGame", 0) == 1) {
 			UpdateGold ();
 		}
+
 	}
 
 	void OnApplicationQuit()
 	{
 		//Savee the current system time as a string in the player prefs class
 		PlayerPrefs.SetString("sysString", System.DateTime.Now.ToBinary().ToString());
+		PlayerPrefs.SetInt ("quitGame", 1);
 	}
 
 	void OnApplicationPause(bool isPause){
 		if (isPause) {
 			PlayerPrefs.SetString("sysString", System.DateTime.Now.ToBinary().ToString());
+			PlayerPrefs.SetInt ("quitGame", 1);
 		} else {
 			UpdateGold ();
 		}
@@ -56,23 +70,26 @@ public class TimeManager : MonoBehaviour {
 		if (messageCount == 0) {
 			int min = OfflineTime ();
 			if (min > 0) {
-				MessageBox.Show ("OFFLINE REWARD", "$" + min * PlayerPrefs.GetInt ("valueOffline", 4));
+				float goldMutiple = 1;
+				if (PlayerPrefs.GetInt ("fishingpass", 0) == 1) {
+					goldMutiple = 0.2f;
+				}
+				VipReward ();
+				MessageBox.Show ("OFFLINE REWARD", "$" + UIManager.UnitChange(min * PlayerPrefs.GetInt ("valueOffline", 40)));
 				PlayerPrefs.SetInt ("offlineOnClick", 1);
 				messageCount++;
 
-				int goldMutiple = 1;
-				if (PlayerPrefs.GetInt ("golden_net", 0) == 1) {
-					goldMutiple = 2;
-				}
 				MessageBox.confim = () => {
 					TGSDK.ReportAdRejected(TGSDKManager.doubleID);
-					int gold = PlayerPrefs.GetInt ("gold", 0) + min * PlayerPrefs.GetInt ("valueOffline", 4)*goldMutiple;
+					int gold = PlayerPrefs.GetInt ("gold", 0) + (int)(min * PlayerPrefs.GetInt ("valueOffline", 40)*(1+goldMutiple));
 					OnMessageBoxBtn(gold);
+					PlayerPrefs.SetInt ("quitGame", 0);
 				};
 				MessageBox.doubleR = () => {					
 					TGSDK.ShowAdScene(TGSDKManager.doubleID);
-					int gold = PlayerPrefs.GetInt ("gold", 0) + min * PlayerPrefs.GetInt ("valueOffline", 4)*2*goldMutiple;
+					int gold = PlayerPrefs.GetInt ("gold", 0) + (int)(min * PlayerPrefs.GetInt ("valueOffline", 40)*2*(1+goldMutiple));
 					OnMessageBoxBtn(gold);
+					PlayerPrefs.SetInt ("quitGame", 0);
 					if (TGSDK.CouldShowAd(TGSDKManager.doubleID)) {
 						TGSDK.ShowAd(TGSDKManager.doubleID);
 					}
@@ -83,11 +100,25 @@ public class TimeManager : MonoBehaviour {
 
 	void OnMessageBoxBtn(int gold){
 		PlayerPrefs.SetInt ("gold", gold);
-		UIManager.Instance.goldT.text = gold.ToString ();
+		UIManager.Instance.goldT.DOText (UIManager.UnitChange (gold), 0.5f, false, ScrambleMode.None, null);
 		Upgrading.Instance.CheckGold ();
 		UpgradingOffline.Instance.CheckGold ();
-		PlayerPrefs.SetString ("sysString", System.DateTime.Now.ToBinary ().ToString ());	
+		//PlayerPrefs.SetString ("sysString", System.DateTime.Now.ToBinary ().ToString ());	
 		PlayerPrefs.SetInt ("offlineOnClick", 2);
 		messageCount=0;
+	}
+
+	void VipReward(){
+		GameObject popBG = (GameObject)Resources.Load ("PopBG");
+		Transform popTrans = popBG.transform;
+		GameObject passVip = popBG.transform.Find ("PassVip").gameObject;
+		GameObject doubleImage = popBG.transform.Find ("GoldDouble").gameObject;
+		GameObject extra = popBG.transform.Find ("extra").gameObject;
+		doubleImage.SetActive (false);
+		passVip.SetActive (true);
+		if (PlayerPrefs.GetInt ("fishingpass", 0) == 1) {
+			passVip.SetActive (false);
+			extra.SetActive (true);
+		}
 	}
 }
