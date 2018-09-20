@@ -121,9 +121,10 @@ public class BGmanager : MonoBehaviour {
 			
 			baseGeneratePosy -= 4;
 
-			if (PlayerPrefs.GetInt ("Level", 1) == 2) {
+			if (PlayerPrefs.GetInt ("Level", 1) != 1) {
 				baseGeneratePosy -= 4;
 			}
+
 		}
 	}
 }
