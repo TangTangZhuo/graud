@@ -113,13 +113,17 @@ public class BGmanager : MonoBehaviour {
 
 			Transform trans = getParallax [stoneIndex];
 			if (trans.name.StartsWith ("l_")) {
-				GameObject.Instantiate (trans, new Vector3 (leftScreen-0.03f, baseGeneratePosy + offset, parallaxIndex - 5), trans.transform.rotation, parallaxBg[parallaxIndex]);
+				GameObject.Instantiate (trans, new Vector3 (leftScreen - 0.03f, baseGeneratePosy + offset, parallaxIndex - 5), trans.transform.rotation, parallaxBg [parallaxIndex]);
 			} else {
-				GameObject.Instantiate (trans, new Vector3 (rightScreen+0.03f, baseGeneratePosy + offset, parallaxIndex - 5), trans.transform.rotation, parallaxBg[parallaxIndex]);
+				GameObject.Instantiate (trans, new Vector3 (rightScreen + 0.03f, baseGeneratePosy + offset, parallaxIndex - 5), trans.transform.rotation, parallaxBg [parallaxIndex]);
 			}
-				
+		
 			
 			baseGeneratePosy -= 4;
+
+			if (PlayerPrefs.GetInt ("Level", 1) == 2) {
+				baseGeneratePosy -= 4;
+			}
 		}
 	}
 }

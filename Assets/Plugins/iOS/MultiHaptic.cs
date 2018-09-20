@@ -15,16 +15,22 @@ public class MultiHaptic {
 
 	public static void HapticLight() {
 		if (Application.platform == RuntimePlatform.IPhonePlayer)
+		if (PlayerPrefs.GetInt ("Taptic", 1) == 1) {
 			_hapticLight ();
+		}
 	}
 
 	public static void HapticMedium() {
-		if(Application.platform==RuntimePlatform.IPhonePlayer)
-			_hapticMedium();
+		if (Application.platform == RuntimePlatform.IPhonePlayer)
+		if (PlayerPrefs.GetInt ("Taptic", 1) == 1) {
+			_hapticMedium ();
+		}
 	}
 
 	public static void HapticHeavy() {
 		if (Application.platform == RuntimePlatform.IPhonePlayer)
+		if (PlayerPrefs.GetInt ("Taptic", 1) == 1) {
 			_hapticHeavy ();
+		}
 	}
 }

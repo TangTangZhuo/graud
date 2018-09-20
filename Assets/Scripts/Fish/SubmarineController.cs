@@ -29,7 +29,7 @@ public class SubmarineController : MonoBehaviour {
 	[HideInInspector]
 	int goldMultiple = 1;
 
-	Dictionary<string,int> fishDic = new Dictionary<string, int>();
+	public Dictionary<string,int> fishDic = new Dictionary<string, int>();
 
 	private static SubmarineController instance;
 	public static SubmarineController Instance{
@@ -37,7 +37,7 @@ public class SubmarineController : MonoBehaviour {
 	}
 
 	void Awake(){
-		instance = this;	
+		instance = this;
 	}
 
 	// Use this for initialization
@@ -56,7 +56,7 @@ public class SubmarineController : MonoBehaviour {
 		InitFishDic ();
 		goldSum = 0;
 		InitProgressSlider ();
-		UpdateGoldMutiple ();
+//		UpdateGoldMutiple ();
 	}
 	
 	// Update is called once per frame

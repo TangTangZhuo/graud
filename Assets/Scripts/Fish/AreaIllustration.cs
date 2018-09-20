@@ -41,6 +41,7 @@ public class AreaIllustration : MonoBehaviour {
 		Illustration.Instance.IllUpdate ();
 		transform.GetComponent<Image> ().color = new Color (0.5f, 0.5f, 0.5f);
 		MultiHaptic.HapticMedium ();
+
 	}
 
 	public void ChangeColorToWrite(){
