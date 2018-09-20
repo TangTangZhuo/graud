@@ -51,7 +51,7 @@ public class FishGenerate : MonoBehaviour {
 				if (Random.Range (0, 60) == 10) {
 					Transform fishUnusual = Transform.Instantiate (unusual[fishIndex], new Vector3 (screenMid + Random.Range (-2, 3), baseGeneratePosy + Random.Range (-5, 6)), 
 						Quaternion.Euler (0, euler [Random.Range (0, 2)], 0), transform);
-					ChangeFishEye (fishUnusual);
+					//ChangeFishEye (fishUnusual);
 				}
 				if (Random.Range (0, 80) == 10) {
 					if (fishIndex  > (fish.Length - 5)) {
@@ -77,7 +77,9 @@ public class FishGenerate : MonoBehaviour {
 	void ChangeFishEye(Transform fish){
 		Animator animator = fish.GetComponentInChildren<Animator> ();
 		if(animator){
+			
 			animator.runtimeAnimatorController	= windMid [Random.Range (0, windMid.Length)];
+
 		}
 	}
 }

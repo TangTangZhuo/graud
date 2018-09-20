@@ -75,7 +75,9 @@ public class TimeManager : MonoBehaviour {
 					goldMutiple = 0.2f;
 				}
 				VipReward ();
-				MessageBox.Show ("OFFLINE REWARD", "$" + UIManager.UnitChange(min * PlayerPrefs.GetInt ("valueOffline", 40)));
+				GameObject popBG = (GameObject)Resources.Load("PopBG");
+				popBG.transform.Find("double").GetComponentInChildren<Text>().text = "Bonus✖️️2";
+				MessageBox.Show ("OFFLINE", "$" + UIManager.UnitChange(min * PlayerPrefs.GetInt ("valueOffline", 40)));
 				PlayerPrefs.SetInt ("offlineOnClick", 1);
 				messageCount++;
 
@@ -85,7 +87,10 @@ public class TimeManager : MonoBehaviour {
 					OnMessageBoxBtn(gold);
 					PlayerPrefs.SetInt ("quitGame", 0);
 				};
-				MessageBox.doubleR = () => {					
+				MessageBox.doubleR = () => {
+					if (!TGSDK.CouldShowAd(TGSDKManager.doubleID)) {
+						
+					}
 					TGSDK.ShowAdScene(TGSDKManager.doubleID);
 					int gold = PlayerPrefs.GetInt ("gold", 0) + (int)(min * PlayerPrefs.GetInt ("valueOffline", 40)*2*(1+goldMutiple));
 					OnMessageBoxBtn(gold);
@@ -109,16 +114,16 @@ public class TimeManager : MonoBehaviour {
 	}
 
 	void VipReward(){
-		GameObject popBG = (GameObject)Resources.Load ("PopBG");
-		Transform popTrans = popBG.transform;
-		GameObject passVip = popBG.transform.Find ("PassVip").gameObject;
-		GameObject doubleImage = popBG.transform.Find ("GoldDouble").gameObject;
-		GameObject extra = popBG.transform.Find ("extra").gameObject;
-		doubleImage.SetActive (false);
-		passVip.SetActive (true);
-		if (PlayerPrefs.GetInt ("fishingpass", 0) == 1) {
-			passVip.SetActive (false);
-			extra.SetActive (true);
-		}
+//		GameObject popBG = (GameObject)Resources.Load ("PopBG");
+//		Transform popTrans = popBG.transform;
+//		GameObject passVip = popBG.transform.Find ("PassVip").gameObject;
+//		GameObject doubleImage = popBG.transform.Find ("GoldDouble").gameObject;
+//		GameObject extra = popBG.transform.Find ("extra").gameObject;
+//		doubleImage.SetActive (false);
+//		passVip.SetActive (true);
+//		if (PlayerPrefs.GetInt ("fishingpass", 0) == 1) {
+//			passVip.SetActive (false);
+//			extra.SetActive (true);
+//		}
 	}
 }

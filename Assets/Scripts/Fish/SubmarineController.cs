@@ -117,19 +117,28 @@ public class SubmarineController : MonoBehaviour {
 						if(PlayerPrefs.GetInt("double",0)>=2){
 							
 							GameObject popBG = (GameObject)Resources.Load("PopBG");
+							Transform doubleTrans = popBG.transform.Find("double");
+							//doubleTrans.DOPunchRotation(new Vector3(100,100,100),1,10,1);
+							//MessageBox.Messagebox.transform.Find("double").DOPunchRotation(new Vector3(1,1,1),1,10,1);
 							int levelIndex = PlayerPrefs.GetInt ("Level", 1);
-							if (levelIndex == 1) {
-								popBG.transform.Find("double").GetComponentInChildren<Text>().text = "TRIPLE";
+							if (levelIndex == 1) {								
+								doubleTrans.GetComponentInChildren<Text>().text = "Bonus✖️️3";
 							}
 							if (levelIndex == 2) {
-								popBG.transform.Find("double").GetComponentInChildren<Text>().text = "QUADRUPLE";
+								doubleTrans.GetComponentInChildren<Text>().text = "Bonus✖️️4";
 							}
 							if (levelIndex == 3) {
-								popBG.transform.Find("double").GetComponentInChildren<Text>().text = "PENTA";
+								doubleTrans.GetComponentInChildren<Text>().text = "Bonus✖️️5";
 							}
 						}
 						//UpdateGoldMutiple ();
-						MessageBox.Show("SALE REWARD","$"+ UIManager.UnitChange(goldSum));
+						MessageBox.Show("You Earend","$"+ UIManager.UnitChange(goldSum));
+						if(PlayerPrefs.GetInt("double",0)>=2){
+							Transform doubleTrans = GameObject.FindGameObjectWithTag("PopBG").transform.Find("double");
+							if(doubleTrans!=null){
+								doubleTrans.DOPunchRotation(new Vector3(0,0,5),1,5,1).SetLoops(100);
+							}
+						}
 						MessageBox.confim =()=>{
 							int gold = PlayerPrefs.GetInt ("gold", 0) + goldSum*goldMultiple;
 							PlayerPrefs.SetInt ("gold", gold);
@@ -140,16 +149,17 @@ public class SubmarineController : MonoBehaviour {
 						};
 						MessageBox.doubleR =()=>{															
 							GameObject popBG = (GameObject)Resources.Load("PopBG");
-							string doubleName = popBG.transform.Find("double").GetComponentInChildren<Text>().text;
+							Transform doubleTrans = popBG.transform.Find("double");
+							string doubleName = doubleTrans.GetComponentInChildren<Text>().text;
 							int gold = 0;
 							goldSum*=goldMultiple;
-							if(doubleName == "TRIPLE"){
+							if(doubleName == "Bonus✖️️3"){
 								gold = PlayerPrefs.GetInt ("gold", 0) + goldSum*3;
-							}else if(doubleName == "QUADRUPLE"){
+							}else if(doubleName == "Bonus✖️️4"){
 								gold = PlayerPrefs.GetInt ("gold", 0) + goldSum*4;
-							}else if(doubleName == "PENTA"){
+							}else if(doubleName == "Bonus✖️️5"){
 								gold = PlayerPrefs.GetInt ("gold", 0) + goldSum*5;
-							}else if(doubleName == "DOUBLE"){
+							}else if(doubleName == "Bonus✖️️2"){
 								gold = PlayerPrefs.GetInt ("gold", 0) + goldSum*2;
 							}
 
@@ -397,12 +407,12 @@ public class SubmarineController : MonoBehaviour {
 	}
 
 	void HidePopUI(bool bo){
-		GameObject popBG = (GameObject)Resources.Load ("PopBG");
-		GameObject doubleImage = popBG.transform.Find ("GoldDouble").gameObject;
-		GameObject passVip = popBG.transform.Find ("PassVip").gameObject;
-		GameObject extra = popBG.transform.Find ("extra").gameObject;
-		doubleImage.SetActive (!bo);
-		passVip.SetActive (false);
-		extra.SetActive (false);
+//		GameObject popBG = (GameObject)Resources.Load ("PopBG");
+//		GameObject doubleImage = popBG.transform.Find ("GoldDouble").gameObject;
+//		GameObject passVip = popBG.transform.Find ("PassVip").gameObject;
+//		GameObject extra = popBG.transform.Find ("extra").gameObject;
+//		doubleImage.SetActive (!bo);
+//		passVip.SetActive (false);
+//		extra.SetActive (false);
 	}
 }
