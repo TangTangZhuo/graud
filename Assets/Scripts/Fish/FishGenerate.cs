@@ -7,9 +7,11 @@ public class FishGenerate : MonoBehaviour {
 	public Transform[] fish;
 	public Transform[] unusual;
 
-	RuntimeAnimatorController[] windMid;
-//	RuntimeAnimatorController[] windLarge;
-//	RuntimeAnimatorController[] windSmall;
+	RuntimeAnimatorController[] wind1;
+	RuntimeAnimatorController[] wind2;
+	RuntimeAnimatorController[] wind3;
+	RuntimeAnimatorController[] wind4;
+	RuntimeAnimatorController[] wind5;
 
 	int typeDistance;
 	int fishIndex;
@@ -29,9 +31,11 @@ public class FishGenerate : MonoBehaviour {
 		fishIndex = 0;
 		typeDistance = 10;
 		euler = new int[]{ 180, 0 };
-		windMid = FishWink.Instance.windMid;
-//		windLarge = FishWink.Instance.windLarge;
-//		windSmall = FishWink.Instance.windSmall;
+		wind1 = FishWink.Instance.wind1;
+		wind2 = FishWink.Instance.wind2;
+		wind3 = FishWink.Instance.wind3;
+		wind4 = FishWink.Instance.wind4;
+		wind5 = FishWink.Instance.wind5;
 	}
 	
 	// Update is called once per frame
@@ -53,7 +57,7 @@ public class FishGenerate : MonoBehaviour {
 						Quaternion.Euler (0, euler [Random.Range (0, 2)], 0), transform);
 					//ChangeFishEye (fishUnusual);
 				}
-				if (Random.Range (0, 80) == 10) {
+				if (Random.Range (0, 800) == 10) {
 					if (fishIndex  > (fish.Length - 5)) {
 						fishIndex = fish.Length - 5;
 					}
@@ -77,8 +81,21 @@ public class FishGenerate : MonoBehaviour {
 	void ChangeFishEye(Transform fish){
 		Animator animator = fish.GetComponentInChildren<Animator> ();
 		if(animator){
-			
-			animator.runtimeAnimatorController	= windMid [Random.Range (0, windMid.Length)];
+			if (animator.runtimeAnimatorController.name == "eye1") {
+				animator.runtimeAnimatorController	= wind1 [Random.Range (0, wind1.Length)];
+			}
+			if (animator.runtimeAnimatorController.name == "eye2") {
+				animator.runtimeAnimatorController	= wind2 [Random.Range (0, wind2.Length)];
+			}
+			if (animator.runtimeAnimatorController.name == "eye3") {
+				animator.runtimeAnimatorController	= wind3 [Random.Range (0, wind3.Length)];
+			}
+			if (animator.runtimeAnimatorController.name == "eye4") {
+				animator.runtimeAnimatorController	= wind4 [Random.Range (0, wind4.Length)];
+			}
+			if (animator.runtimeAnimatorController.name == "eye5") {
+				animator.runtimeAnimatorController	= wind5 [Random.Range (0, wind5.Length)];
+			}
 
 		}
 	}

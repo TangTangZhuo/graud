@@ -76,7 +76,14 @@ public class TimeManager : MonoBehaviour {
 				}
 				VipReward ();
 				GameObject popBG = (GameObject)Resources.Load("PopBG");
-				popBG.transform.Find("double").GetComponentInChildren<Text>().text = "Bonus✖️️2";
+				Transform doubleTrans = popBG.transform.Find ("double");
+				doubleTrans.GetComponentInChildren<Text>().text = "Bonus✖️️2";
+				if (!TGSDK.CouldShowAd (TGSDKManager.doubleID)) {
+					doubleTrans.GetComponent<Button> ().interactable = false;
+				} else {
+					doubleTrans.GetComponent<Button> ().interactable = true;
+				}
+
 				MessageBox.Show ("OFFLINE", "$" + UIManager.UnitChange(min * PlayerPrefs.GetInt ("valueOffline", 40)));
 				PlayerPrefs.SetInt ("offlineOnClick", 1);
 				messageCount++;
@@ -88,9 +95,6 @@ public class TimeManager : MonoBehaviour {
 					PlayerPrefs.SetInt ("quitGame", 0);
 				};
 				MessageBox.doubleR = () => {
-					if (!TGSDK.CouldShowAd(TGSDKManager.doubleID)) {
-						
-					}
 					TGSDK.ShowAdScene(TGSDKManager.doubleID);
 					int gold = PlayerPrefs.GetInt ("gold", 0) + (int)(min * PlayerPrefs.GetInt ("valueOffline", 40)*2*(1+goldMutiple));
 					OnMessageBoxBtn(gold);

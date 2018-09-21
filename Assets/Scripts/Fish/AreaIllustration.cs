@@ -34,11 +34,19 @@ public class AreaIllustration : MonoBehaviour {
 	}
 
 	public void ChangeArea(){
+		int index = 0;
+		if (transform.name == "Area1") {
+			index = 0;
+		}if (transform.name == "Area2") {
+			index = 10;
+		}if (transform.name == "Area3") {
+			index = 20;
+		}
 		Illustration.Instance.fishImage = fishImage;
 		Illustration.Instance.fishName = fishName;
 		Illustration.Instance.unusualImage = unusualImage;
 		Illustration.Instance.unLockImage = unLockImage;
-		Illustration.Instance.IllUpdate ();
+		Illustration.Instance.IllUpdate (index);
 		transform.GetComponent<Image> ().color = new Color (0.5f, 0.5f, 0.5f);
 		MultiHaptic.HapticMedium ();
 

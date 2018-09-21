@@ -37,7 +37,8 @@ public class NetTop : MonoBehaviour {
 				if (collider.tag == "unusual") {
 					MultiHaptic.HapticHeavy ();
 					//ScoreGenerate (collider.transform);
-					Destroy( collider.GetComponent<GhostSprites> ());
+					collider.GetComponent<GhostSprites> ().alphaFluctuationOverride = 0.15f;
+					//Destroy( collider.GetComponent<GhostSprites> ());
 				}
 				if (ProgressManager.Instance.isRunning) {
 					MultiHaptic.HapticLight ();

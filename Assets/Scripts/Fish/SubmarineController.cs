@@ -38,6 +38,8 @@ public class SubmarineController : MonoBehaviour {
 
 	void Awake(){
 		instance = this;
+		//PlayerPrefs.SetInt ("gold", 999999999);
+		//PlayerPrefs.DeleteAll ();
 	}
 
 	// Use this for initialization
@@ -114,10 +116,12 @@ public class SubmarineController : MonoBehaviour {
 						}
 						isSettle = false;
 
+						GameObject popBG = (GameObject)Resources.Load("PopBG");
+						Transform doubleTrans = popBG.transform.Find("double");
+
 						if(PlayerPrefs.GetInt("double",0)>=2){
 							
-							GameObject popBG = (GameObject)Resources.Load("PopBG");
-							Transform doubleTrans = popBG.transform.Find("double");
+
 							//doubleTrans.DOPunchRotation(new Vector3(100,100,100),1,10,1);
 							//MessageBox.Messagebox.transform.Find("double").DOPunchRotation(new Vector3(1,1,1),1,10,1);
 							int levelIndex = PlayerPrefs.GetInt ("Level", 1);
@@ -132,11 +136,18 @@ public class SubmarineController : MonoBehaviour {
 							}
 						}
 						//UpdateGoldMutiple ();
+
+						if (!TGSDK.CouldShowAd (TGSDKManager.doubleID)) {
+							doubleTrans.GetComponent<Button> ().interactable = false;
+						} else {
+							doubleTrans.GetComponent<Button> ().interactable = true;
+						}
+
 						MessageBox.Show("You Earend","$"+ UIManager.UnitChange(goldSum));
 						if(PlayerPrefs.GetInt("double",0)>=2){
-							Transform doubleTrans = GameObject.FindGameObjectWithTag("PopBG").transform.Find("double");
+							Transform doubleTrans1 = GameObject.FindGameObjectWithTag("PopBG").transform.Find("double");
 							if(doubleTrans!=null){
-								doubleTrans.DOPunchRotation(new Vector3(0,0,5),1,5,1).SetLoops(100);
+								doubleTrans1.DOPunchRotation(new Vector3(0,0,5),1,5,1).SetLoops(100);
 							}
 						}
 						MessageBox.confim =()=>{
@@ -148,8 +159,8 @@ public class SubmarineController : MonoBehaviour {
 							PlayerPrefs.SetInt ("double", PlayerPrefs.GetInt ("double", 0) + 1);
 						};
 						MessageBox.doubleR =()=>{															
-							GameObject popBG = (GameObject)Resources.Load("PopBG");
-							Transform doubleTrans = popBG.transform.Find("double");
+							//GameObject popBG = (GameObject)Resources.Load("PopBG");
+							//Transform doubleTrans = popBG.transform.Find("double");
 							string doubleName = doubleTrans.GetComponentInChildren<Text>().text;
 							int gold = 0;
 							goldSum*=goldMultiple;
@@ -385,26 +396,26 @@ public class SubmarineController : MonoBehaviour {
 		progressSlider.transform.Find ("depth").GetComponent<Text> ().text = UIManager.Instance.diveDepth+"M";
 	}
 
-	public void UpdateGoldMutiple(){
-		GameObject popBG = (GameObject)Resources.Load ("PopBG");
-		GameObject doubleImage = popBG.transform.Find ("GoldDouble").gameObject;
-		GameObject passVip = popBG.transform.Find ("PassVip").gameObject;
-		SkinnedMeshRenderer skin1 = netParent.parent.Find ("FishNet").GetComponent<SkinnedMeshRenderer> ();
-		SkinnedMeshRenderer skin2 = netParent.parent.Find ("FishNetReady").GetComponent<SkinnedMeshRenderer> ();
-		Material goldNet = IPAManager.Instance.goldNet;
-				
-		if (PlayerPrefs.GetInt ("golden_net", 0) == 1) {
-			goldMultiple = 2;
-			skin1.material = goldNet;
-			skin2.material = goldNet;
-				//skin1.transform.GetChild (0).gameObject.SetActive (true);
-				//skin2.transform.GetChild (0).gameObject.SetActive (true);			
-		}
-		if (PlayerPrefs.GetInt ("golden_net", 0) == 0) {
-			goldMultiple = 1;
-		}
-
-	}
+//	public void UpdateGoldMutiple(){
+//		GameObject popBG = (GameObject)Resources.Load ("PopBG");
+//		GameObject doubleImage = popBG.transform.Find ("GoldDouble").gameObject;
+//		GameObject passVip = popBG.transform.Find ("PassVip").gameObject;
+//		SkinnedMeshRenderer skin1 = netParent.parent.Find ("FishNet").GetComponent<SkinnedMeshRenderer> ();
+//		SkinnedMeshRenderer skin2 = netParent.parent.Find ("FishNetReady").GetComponent<SkinnedMeshRenderer> ();
+////		Material goldNet = IPAManager.Instance.goldNet;
+//				
+//		if (PlayerPrefs.GetInt ("golden_net", 0) == 1) {
+//			goldMultiple = 2;
+//			skin1.material = goldNet;
+//			skin2.material = goldNet;
+//				//skin1.transform.GetChild (0).gameObject.SetActive (true);
+//				//skin2.transform.GetChild (0).gameObject.SetActive (true);			
+//		}
+//		if (PlayerPrefs.GetInt ("golden_net", 0) == 0) {
+//			goldMultiple = 1;
+//		}
+//
+//	}
 
 	void HidePopUI(bool bo){
 //		GameObject popBG = (GameObject)Resources.Load ("PopBG");

@@ -33,7 +33,7 @@ public class Illustration : MonoBehaviour {
 		isShow = false;
 		screenHeight = Screen.height;
 		//fishNumber = fishImage.Length;
-		IllUpdate ();
+		//IllUpdate (0);
 		if (PlayerPrefs.GetInt ("illNew", 0)==1) {
 			illNew.SetActive (true);
 		}
@@ -45,14 +45,16 @@ public class Illustration : MonoBehaviour {
 	}
 
 
-	public void IllUpdate(){
+	public void IllUpdate(int index){
 		for (int i = 0; i < scrollContent.childCount; i++) {
 			Destroy (scrollContent.GetChild (i).gameObject);
 		}
-		for (int i =0; i < fishImage.Length; i++) {
+		//int index = 0;
+
+		for (int i = 0; i < fishImage.Length; i++) {
 			
 			Transform item = Transform.Instantiate (fishItem, scrollContent);
-			if (PlayerPrefs.GetInt ("fish" + (i + 1), 0) == 1) {
+			if (PlayerPrefs.GetInt ("fish" + (i + 1+index), 0) == 1) {
 				item.Find ("name").GetComponent<Text> ().text = fishName [i];
 				item.Find ("image").GetComponent<Image> ().sprite = fishImage [i];
 			} else {
@@ -60,7 +62,7 @@ public class Illustration : MonoBehaviour {
 				item.Find ("image").GetComponent<Image> ().sprite = unLockImage [i];
 
 			}
-			if (PlayerPrefs.GetInt ("unusual" + (i + 1), 0) == 1) {
+			if (PlayerPrefs.GetInt ("unusual" + (i + 1+index), 0) == 1) {
 				item.Find ("unusual").GetComponent<Image> ().sprite = unusualImage [i];
 			} else {
 				item.Find ("unusual").GetComponent<Image> ().enabled = false;

@@ -12,6 +12,7 @@ public class Map : MonoBehaviour {
 	public Transform lv4;
 
 	public Transform path;
+	public Transform point;
 	private Transform[] pathPoint;
 
 	public Transform shipMark;
@@ -37,6 +38,7 @@ public class Map : MonoBehaviour {
 
 	public void OnMapBtn(){
 		gameObject.SetActive (true);
+		point.DOPunchPosition (new Vector3 (0, 10, 0), 1, 5, 1, false).SetLoops(10);
 		MultiHaptic.HapticMedium ();
 	}
 
@@ -49,6 +51,7 @@ public class Map : MonoBehaviour {
 			for (int i = 0; i < v3Count; i++) {
 				pathV3 [i] = pathPoint [v3Count - i -1].position;
 			}
+			Destroy (point.gameObject);
 			shipMark.DOPath (pathV3, 1, PathType.Linear, PathMode.TopDown2D, 10, null).OnComplete(()=>{
 				PlayerPrefs.SetInt ("Level", 1);
 				SceneManager.LoadScene ("Level1");
@@ -57,9 +60,12 @@ public class Map : MonoBehaviour {
 	}
 
 	public void OnLevel2Btn(){
+		print (1);
 		if (PlayerPrefs.GetInt ("Lock2", 0) == 1) {
+			print (2);
 			int level = PlayerPrefs.GetInt ("Level", 1);
 			if (level != 2) {
+				print (3);
 				MultiHaptic.HapticMedium ();
 				int index = int.Parse ((levelPos [level - 1].name.ToString ()));
 				int curIndex = int.Parse ((levelPos [1].name.ToString ()));
@@ -78,7 +84,7 @@ public class Map : MonoBehaviour {
 						pathV3 [i] = pathPoint [index - i - 1].position;
 					}
 				}
-
+				Destroy (point.gameObject);
 				shipMark.DOPath (pathV3, 1, PathType.Linear, PathMode.TopDown2D, 10, null).OnComplete (() => {
 					PlayerPrefs.SetInt ("Level", 2);
 					SceneManager.LoadScene ("Level2");
@@ -126,7 +132,7 @@ public class Map : MonoBehaviour {
 						pathV3 [i] = pathPoint [index - i].position;
 					}
 				}
-
+				Destroy (point.gameObject);
 				shipMark.DOPath (pathV3, 1, PathType.Linear, PathMode.TopDown2D, 10, null).OnComplete (() => {
 					PlayerPrefs.SetInt ("Level", 3);
 					SceneManager.LoadScene ("Level3");
@@ -160,9 +166,10 @@ public class Map : MonoBehaviour {
 	void GenerateText(Transform trans,string content){
 		Text text = Text.Instantiate (noLeveltext,trans.position,noLeveltext.transform.rotation,trans);
 		text.text = content;
-		text.DOFade (1f, 0.3f);
-		text.transform.DOMoveY (text.transform.position.y+100f, 0.3f, false);
-		text.transform.DOScale (1.2f, 0.3f).OnComplete(()=>{Destroy(text.gameObject);});
+		text.DOFade (1f, 0.6f);
+		text.transform.DOMoveY (text.transform.position.y+100f, 0.6f, false);
+		text.transform.DOScale (1.2f, 0.6f).OnComplete(()=>{Destroy(text.gameObject);});
 	} 
+		
 		
 }
